@@ -21,6 +21,7 @@
     "@typescript-eslint/parser": "^8.29.0",
     "eslint-config-prettier": "^10.1.1",
     "eslint-plugin-prettier": "^5.2.6",
+    "git-commit-msg-linter": "^5.0.8",
     "globals": "^16.0.0",
     "husky": "^8.0.3",
     "lint-staged": "^15.5.0",
