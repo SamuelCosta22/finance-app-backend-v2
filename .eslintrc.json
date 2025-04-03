@@ -4,14 +4,11 @@
     "es2021": true,
     "node": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:@typescript-eslint/recommended",
-    "prettier"
-  ],
+  "extends": ["eslint:recommended", "prettier"],
   "parser": "@typescript-eslint/parser",
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
+    "linebreak-style": ["error", "windows"],
     "prettier/prettier": ["error", { "semi": true }],
     "semi": ["error", "always"],
     "@typescript-eslint/no-unused-vars": "error"
