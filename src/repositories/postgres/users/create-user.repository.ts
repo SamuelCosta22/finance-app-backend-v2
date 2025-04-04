@@ -1,12 +1,5 @@
 import { PostgresHelper } from '../../../db/postgres/helper.js';
-
-export type CreateUserParams = {
-  ID: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-};
+import { CreateUserParams } from '../../../types/users/CreateUserParams.ts';
 
 export class PostgresCreateUserRepository {
   async execute(createUserParams: CreateUserParams) {
