@@ -1,6 +1,8 @@
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
 import { CreateUserUseCase } from '../../usecases/users/create-user.usecase.ts';
 import validator from 'validator';
+import { badRequest, created, serverError } from '../helpers.ts';
+import { PostgresCompareEmail } from '../../repositories/postgres/users/compare-email.repository.ts';
 
 type HttpRequest = {
   body: CreateUserParams;
@@ -18,49 +20,41 @@ export class CreateUserController {
           !params[field as ParamsKeys] ||
           params[field as ParamsKeys]?.trim().length === 0
         ) {
-          return {
-            statusCode: 400,
-            body: {
-              errorMessage: `Missing param: ${field}`,
-            },
-          };
+          return badRequest({ message: `Missing param: ${field}` });
         }
 
         if (params.password.length < 6) {
-          return {
-            statusCode: 400,
-            body: {
-              errorMessage: 'Password must be at least 6 characters',
-            },
-          };
+          return badRequest({
+            message: 'Password must be at least 6 characters',
+          });
         }
 
         const emailIsValid = validator.isEmail(params.email);
         if (!emailIsValid) {
-          return {
-            statusCode: 400,
-            body: {
-              errorMessage: 'Invalid email. Please provide a valid one.',
-            },
-          };
+          return badRequest({
+            message: 'Invalid email. Please provide a valid one.',
+          });
+        }
+
+        const postgresCompareEmail = new PostgresCompareEmail();
+        const emailExistsResult = await postgresCompareEmail.execute(
+          params.email,
+        );
+        const emailExists = emailExistsResult[0].exists;
+        if (emailExists) {
+          return badRequest({
+            message: 'Email already in use. Please choose another one.',
+          });
         }
       }
 
       const createUserUseCase = new CreateUserUseCase();
       const createdUser = await createUserUseCase.execute(params);
 
-      return {
-        statusCode: 201,
-        body: createdUser,
-      };
+      return created({ createdUser });
     } catch (error) {
       console.log(error);
-      return {
-        statusCode: 500,
-        body: {
-          errorMessage: 'Internal server error',
-        },
-      };
+      return serverError();
     }
   }
 }
