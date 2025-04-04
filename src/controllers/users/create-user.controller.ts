@@ -1,5 +1,6 @@
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
 import { CreateUserUseCase } from '../../usecases/users/create-user.usecase.ts';
+import validator from 'validator';
 
 type HttpRequest = {
   body: CreateUserParams;
@@ -24,12 +25,30 @@ export class CreateUserController {
             },
           };
         }
+
+        if (params.password.length < 6) {
+          return {
+            statusCode: 400,
+            body: {
+              errorMessage: 'Password must be at least 6 characters',
+            },
+          };
+        }
+
+        const emailIsValid = validator.isEmail(params.email);
+        if (!emailIsValid) {
+          return {
+            statusCode: 400,
+            body: {
+              errorMessage: 'Invalid email. Please provide a valid one.',
+            },
+          };
+        }
       }
 
       const createUserUseCase = new CreateUserUseCase();
       const createdUser = await createUserUseCase.execute(params);
 
-      //retornar a resposta para o usuário (status code)
       return {
         statusCode: 201,
         body: createdUser,
