@@ -4,7 +4,7 @@ export const badRequest = (body: object) => ({
 });
 
 export const created = (body: object) => ({
-  statudCode: 201,
+  statusCode: 201,
   body,
 });
 

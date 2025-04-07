@@ -1,8 +1,8 @@
+import validator from 'validator';
+import { EmailAlreadyInUseError } from '../../errors/user.ts';
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
 import { CreateUserUseCase } from '../../usecases/users/create-user.usecase.ts';
-import validator from 'validator';
 import { badRequest, created, serverError } from '../helpers.ts';
-import { PostgresCompareEmail } from '../../repositories/postgres/users/compare-email.repository.ts';
 
 type HttpRequest = {
   body: CreateUserParams;
@@ -35,17 +35,6 @@ export class CreateUserController {
             message: 'Invalid email. Please provide a valid one.',
           });
         }
-
-        const postgresCompareEmail = new PostgresCompareEmail();
-        const emailExistsResult = await postgresCompareEmail.execute(
-          params.email,
-        );
-        const emailExists = emailExistsResult[0].exists;
-        if (emailExists) {
-          return badRequest({
-            message: 'Email already in use. Please choose another one.',
-          });
-        }
       }
 
       const createUserUseCase = new CreateUserUseCase();
@@ -53,6 +42,9 @@ export class CreateUserController {
 
       return created({ createdUser });
     } catch (error) {
+      if (error instanceof EmailAlreadyInUseError) {
+        return badRequest({ message: error.message });
+      }
       console.log(error);
       return serverError();
     }
