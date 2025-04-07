@@ -13,6 +13,9 @@
 
     "moduleResolution": "NodeNext",
     "allowImportingTsExtensions": true,
-    "noEmit": true
+    "noEmit": true,
+
+    "allowJs": true,
+    "checkJs": false
   }
 }
