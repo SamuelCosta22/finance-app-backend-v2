@@ -3,6 +3,11 @@ export const badRequest = (body: object) => ({
   body,
 });
 
+export const notFound = (body: object) => ({
+  statusCode: 404,
+  body,
+});
+
 export const created = (body: object) => ({
   statusCode: 201,
   body,
