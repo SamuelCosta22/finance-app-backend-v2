@@ -4,7 +4,7 @@ import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
 import { CreateUserUseCase } from '../../usecases/users/create-user.usecase.ts';
 import { badRequest, created, serverError } from '../helpers.ts';
 
-type HttpRequest = {
+export type HttpRequest = {
   body: CreateUserParams;
 };
 
