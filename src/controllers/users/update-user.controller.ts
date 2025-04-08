@@ -42,6 +42,13 @@ export class UpdateUserController {
         }
       }
 
+      const someFieldIsBlank = Object.keys(updateUserParams).some(
+        (field) => updateUserParams[field].trim().length === 0,
+      );
+      if (someFieldIsBlank) {
+        return badRequest({ message: 'Some provided field is blank' });
+      }
+
       const updateUserUseCase = new UpdateUserUseCase();
       const updatedUser = updateUserUseCase.execute(userId, updateUserParams);
 
