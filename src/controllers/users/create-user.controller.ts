@@ -1,15 +1,15 @@
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
 import { CreateUserUseCase } from '../../usecases/users/create-user.usecase.ts';
-import { badRequest, created, serverError } from './helpers/http.ts';
-import {
-  emailIsAlreadyInUseResponse,
-  invalidPasswordResponse,
-} from './helpers/invalid-response.ts';
 import {
   checkIfEmailIsValid,
   checkIfPasswordIsValid,
-} from './helpers/validations.ts';
+  badRequest,
+  created,
+  serverError,
+  emailIsAlreadyInUseResponse,
+  invalidPasswordResponse,
+} from './helpers/index.ts';
 
 export type HttpRequest = {
   body: CreateUserParams;

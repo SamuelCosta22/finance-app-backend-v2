@@ -1,22 +1,22 @@
-import validator from 'validator';
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
 import { UpdateUserUseCase } from '../../usecases/users/update-user.usecase.ts';
-import { badRequest, serverError, success } from './helpers/http.ts';
 import {
   emailIsAlreadyInUseResponse,
   invalidIdResponse,
   invalidPasswordResponse,
-} from './helpers/invalid-response.ts';
-import {
+  serverError,
+  success,
   checkIfEmailIsValid,
+  checkIfIdIsValid,
   checkIfPasswordIsValid,
-} from './helpers/validations.ts';
+  badRequest,
+} from './helpers/index.ts';
 
 export class UpdateUserController {
   async execute(httpRequest: any) {
     try {
       const userId = httpRequest.params.userId;
-      const isIdValid = validator.isUUID(userId);
+      const isIdValid = checkIfIdIsValid(userId);
       if (!isIdValid) {
         return invalidIdResponse();
       }
