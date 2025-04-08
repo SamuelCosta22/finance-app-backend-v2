@@ -2,9 +2,9 @@ import { GetUserByIdUseCase } from '../../usecases/users/get-user-by-id.usecase.
 import {
   checkIfIdIsValid,
   invalidIdResponse,
-  notFound,
   serverError,
   success,
+  userNotFoundResponse,
 } from './helpers/index.ts';
 
 export class GetUserByIdController {
@@ -18,7 +18,7 @@ export class GetUserByIdController {
       const getUserByIdUseCase = new GetUserByIdUseCase();
       const user = await getUserByIdUseCase.execute(httpRequest.params.userId);
 
-      if (!user) return notFound({ message: 'User not found' });
+      if (!user) return userNotFoundResponse();
 
       const { statusCode, body } = success(user);
       return { statusCode, body };

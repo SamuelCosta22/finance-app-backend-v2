@@ -1,7 +1,12 @@
 import { DeleteUserUseCase } from '../../usecases/users/delete-user.usecase.ts';
-import { serverError, success } from './helpers/http.ts';
-import { invalidIdResponse } from './helpers/invalid-response.ts';
-import { checkIfIdIsValid } from './helpers/validations.ts';
+import {} from './helpers/http.ts';
+import {
+  invalidIdResponse,
+  userNotFoundResponse,
+  serverError,
+  success,
+  checkIfIdIsValid,
+} from './helpers/index.ts';
 
 export class DeleteUserController {
   async execute(httpRequest: any) {
@@ -13,6 +18,10 @@ export class DeleteUserController {
 
       const deleteUserUseCase = new DeleteUserUseCase();
       const deletedUser = deleteUserUseCase.execute(userId);
+
+      if (!deletedUser) {
+        return userNotFoundResponse();
+      }
 
       const { statusCode, body } = success(deletedUser);
       return { statusCode, body };
