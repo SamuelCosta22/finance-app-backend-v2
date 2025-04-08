@@ -1,15 +1,14 @@
-import { GetUserByIdUseCase } from '../../usecases/users/get-user-by-id.usecase.ts';
-import { badRequest, notFound, serverError, success } from '../helpers.ts';
 import validator from 'validator';
+import { GetUserByIdUseCase } from '../../usecases/users/get-user-by-id.usecase.ts';
+import { notFound, serverError, success } from './helpers/http.ts';
+import { invalidIdResponse } from './helpers/invalid-response.ts';
 
 export class GetUserByIdController {
   async execute(httpRequest: any) {
     try {
       const isIdValid = validator.isUUID(httpRequest.params.userId);
       if (!isIdValid) {
-        return badRequest({
-          message: 'The provided ID is not valid.',
-        });
+        return invalidIdResponse();
       }
 
       const getUserByIdUseCase = new GetUserByIdUseCase();

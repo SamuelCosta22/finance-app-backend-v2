@@ -1,7 +1,16 @@
 import validator from 'validator';
-import { UpdateUserUseCase } from '../../usecases/users/update-user.usecase.ts';
-import { badRequest, serverError, success } from '../helpers.ts';
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
+import { UpdateUserUseCase } from '../../usecases/users/update-user.usecase.ts';
+import { badRequest, serverError, success } from './helpers/http.ts';
+import {
+  emailIsAlreadyInUseResponse,
+  invalidIdResponse,
+  invalidPasswordResponse,
+} from './helpers/invalid-response.ts';
+import {
+  checkIfEmailIsValid,
+  checkIfPasswordIsValid,
+} from './helpers/validations.ts';
 
 export class UpdateUserController {
   async execute(httpRequest: any) {
@@ -9,15 +18,13 @@ export class UpdateUserController {
       const userId = httpRequest.params.userId;
       const isIdValid = validator.isUUID(userId);
       if (!isIdValid) {
-        return badRequest({
-          message: 'The provided ID is not valid.',
-        });
+        return invalidIdResponse();
       }
 
-      const updateUserParams = httpRequest.body;
+      const params = httpRequest.body;
 
       const allowedFields = ['first_name', 'last_name', 'email', 'password'];
-      const someFieldIsNotAllowed = Object.keys(updateUserParams).some(
+      const someFieldIsNotAllowed = Object.keys(params).some(
         (field) => !allowedFields.includes(field),
       );
 
@@ -25,32 +32,29 @@ export class UpdateUserController {
         return badRequest({ message: 'Some provided field is not allowed.' });
       }
 
-      if (updateUserParams.password) {
-        if (updateUserParams.password.length < 6) {
-          return badRequest({
-            message: 'Password must be at least 6 characters',
-          });
+      if (params.password) {
+        const passwordIdValid = checkIfPasswordIsValid(params.password);
+        if (!passwordIdValid) {
+          return invalidPasswordResponse();
         }
       }
 
-      if (updateUserParams.email) {
-        const emailIsValid = validator.isEmail(updateUserParams.email);
+      if (params.email) {
+        const emailIsValid = checkIfEmailIsValid(params.email);
         if (!emailIsValid) {
-          return badRequest({
-            message: 'Invalid email. Please provide a valid one.',
-          });
+          return emailIsAlreadyInUseResponse();
         }
       }
 
-      const someFieldIsBlank = Object.keys(updateUserParams).some(
-        (field) => updateUserParams[field].trim().length === 0,
+      const someFieldIsBlank = Object.keys(params).some(
+        (field) => params[field].trim().length === 0,
       );
       if (someFieldIsBlank) {
         return badRequest({ message: 'Some provided field is blank' });
       }
 
       const updateUserUseCase = new UpdateUserUseCase();
-      const updatedUser = updateUserUseCase.execute(userId, updateUserParams);
+      const updatedUser = updateUserUseCase.execute(userId, params);
 
       const { statusCode, body } = success(updatedUser);
       return { statusCode, body };

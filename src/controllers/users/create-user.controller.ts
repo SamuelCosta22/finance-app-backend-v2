@@ -1,8 +1,15 @@
-import validator from 'validator';
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
 import { CreateUserUseCase } from '../../usecases/users/create-user.usecase.ts';
-import { badRequest, created, serverError } from '../helpers.ts';
+import { badRequest, created, serverError } from './helpers/http.ts';
+import {
+  emailIsAlreadyInUseResponse,
+  invalidPasswordResponse,
+} from './helpers/invalid-response.ts';
+import {
+  checkIfEmailIsValid,
+  checkIfPasswordIsValid,
+} from './helpers/validations.ts';
 
 export type HttpRequest = {
   body: CreateUserParams;
@@ -23,17 +30,14 @@ export class CreateUserController {
           return badRequest({ message: `Missing param: ${field}` });
         }
 
-        if (params.password.length < 6) {
-          return badRequest({
-            message: 'Password must be at least 6 characters',
-          });
+        const passwordIsValid = checkIfPasswordIsValid(params.password);
+        if (!passwordIsValid) {
+          return invalidPasswordResponse();
         }
 
-        const emailIsValid = validator.isEmail(params.email);
+        const emailIsValid = checkIfEmailIsValid(params.email);
         if (!emailIsValid) {
-          return badRequest({
-            message: 'Invalid email. Please provide a valid one.',
-          });
+          return emailIsAlreadyInUseResponse();
         }
       }
 
