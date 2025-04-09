@@ -1,14 +1,14 @@
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
+import { ICreateUserRepository } from '../../repositories/postgres/users/create-user.repository.ts';
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
-import { CreateUserUseCase } from '../../usecases/users/create-user.usecase.ts';
 import {
+  badRequest,
   checkIfEmailIsValid,
   checkIfPasswordIsValid,
-  badRequest,
   created,
-  serverError,
   emailIsAlreadyInUseResponse,
   invalidPasswordResponse,
+  serverError,
 } from './helpers/index.ts';
 
 export type HttpRequest = {
@@ -16,6 +16,10 @@ export type HttpRequest = {
 };
 
 export class CreateUserController {
+  constructor(private createUserUseCase: ICreateUserRepository) {
+    this.createUserUseCase = createUserUseCase;
+  }
+
   async execute(httpRequest: HttpRequest) {
     try {
       const params = httpRequest.body;
@@ -41,8 +45,7 @@ export class CreateUserController {
         }
       }
 
-      const createUserUseCase = new CreateUserUseCase();
-      const createdUser = await createUserUseCase.execute(params);
+      const createdUser = await this.createUserUseCase.execute(params);
 
       return created({ createdUser });
     } catch (error) {

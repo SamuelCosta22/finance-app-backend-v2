@@ -7,6 +7,9 @@ import { GetUserByIdController } from './controllers/users/get-user-by-id.contro
 import { UpdateUserController } from './controllers/users/update-user.controller.ts';
 import { PostgresGetUserByIdRepository } from './repositories/postgres/users/get-user-by-id.repository.ts';
 import { GetUserByIdUseCase } from './usecases/users/get-user-by-id.usecase.ts';
+import { PostgresCreateUserRepository } from './repositories/postgres/users/create-user.repository.ts';
+import { CreateUserUseCase } from './usecases/users/create-user.usecase.ts';
+import { PostgresGetUserByEmailRepository } from './repositories/postgres/users/get-user-by-email.repository.ts';
 
 const app = express();
 
@@ -23,9 +26,15 @@ app.get('/api/users/:userId', async (request, response) => {
 });
 
 app.post('/api/users', async (request, response) => {
-  const createUserController = new CreateUserController();
-  const { body, statusCode } = await createUserController.execute(request);
+  const getUserByEmailRepository = new PostgresGetUserByEmailRepository();
+  const createUserRepository = new PostgresCreateUserRepository();
+  const createUserUseCase = new CreateUserUseCase(
+    createUserRepository,
+    getUserByEmailRepository,
+  );
+  const createUserController = new CreateUserController(createUserUseCase);
 
+  const { body, statusCode } = await createUserController.execute(request);
   response.status(statusCode).send(body);
 });
 

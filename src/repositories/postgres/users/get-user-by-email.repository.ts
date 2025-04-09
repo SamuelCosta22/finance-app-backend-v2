@@ -1,5 +1,9 @@
 import { PostgresHelper } from '../../../db/postgres/helper.js';
 
+export interface IGetUserByEmailRepository {
+  execute(email: string): Promise<any>; // Retorna uma Promise
+}
+
 export class PostgresGetUserByEmailRepository {
   async execute(email: string) {
     const user = await PostgresHelper.query(
