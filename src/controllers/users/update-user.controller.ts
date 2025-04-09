@@ -1,18 +1,22 @@
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
-import { UpdateUserUseCase } from '../../usecases/users/update-user.usecase.ts';
+import { IUpdateUserRepository } from '../../repositories/postgres/users/update-user.repository.ts';
 import {
+  badRequest,
+  checkIfEmailIsValid,
+  checkIfIdIsValid,
+  checkIfPasswordIsValid,
   emailIsAlreadyInUseResponse,
   invalidIdResponse,
   invalidPasswordResponse,
   serverError,
   success,
-  checkIfEmailIsValid,
-  checkIfIdIsValid,
-  checkIfPasswordIsValid,
-  badRequest,
 } from './helpers/index.ts';
 
 export class UpdateUserController {
+  constructor(private updateUserUseCase: IUpdateUserRepository) {
+    this.updateUserUseCase = updateUserUseCase;
+  }
+
   async execute(httpRequest: any) {
     try {
       const userId = httpRequest.params.userId;
@@ -53,8 +57,7 @@ export class UpdateUserController {
         return badRequest({ message: 'Some provided field is blank' });
       }
 
-      const updateUserUseCase = new UpdateUserUseCase();
-      const updatedUser = updateUserUseCase.execute(userId, params);
+      const updatedUser = this.updateUserUseCase.execute(userId, params);
 
       const { statusCode, body } = success(updatedUser);
       return { statusCode, body };

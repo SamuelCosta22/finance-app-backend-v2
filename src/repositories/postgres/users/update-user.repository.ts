@@ -1,6 +1,10 @@
 import { PostgresHelper } from '../../../db/postgres/helper.js';
 import { CreateUserParams } from '../../../types/users/CreateUserParams.ts';
 
+export interface IUpdateUserRepository {
+  execute(userId: string, input: CreateUserParams): Promise<any>; // Retorna uma Promise
+}
+
 export class PostgresUpdateUserRepository {
   async execute(userId: string, input: CreateUserParams) {
     const updateFields: string[] = [];

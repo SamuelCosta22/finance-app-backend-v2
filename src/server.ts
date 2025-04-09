@@ -10,6 +10,8 @@ import { GetUserByIdUseCase } from './usecases/users/get-user-by-id.usecase.ts';
 import { PostgresCreateUserRepository } from './repositories/postgres/users/create-user.repository.ts';
 import { CreateUserUseCase } from './usecases/users/create-user.usecase.ts';
 import { PostgresGetUserByEmailRepository } from './repositories/postgres/users/get-user-by-email.repository.ts';
+import { PostgresUpdateUserRepository } from './repositories/postgres/users/update-user.repository.ts';
+import { UpdateUserUseCase } from './usecases/users/update-user.usecase.ts';
 
 const app = express();
 
@@ -39,7 +41,10 @@ app.post('/api/users', async (request, response) => {
 });
 
 app.patch('/api/users/:userId', async (request, response) => {
-  const updateUserController = new UpdateUserController();
+  const updateUserRepository = new PostgresUpdateUserRepository();
+  const updateUserUseCase = new UpdateUserUseCase(updateUserRepository);
+  const updateUserController = new UpdateUserController(updateUserUseCase);
+
   const { body, statusCode } = await updateUserController.execute(request);
   response.status(statusCode).send(body);
 });
