@@ -1,8 +1,10 @@
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
-import { ICreateUserRepository } from '../../repositories/postgres/users/create-user.repository.ts';
-import { IGetUserByEmailRepository } from '../../repositories/postgres/users/get-user-by-email.repository.ts';
+import {
+  ICreateUserRepository,
+  IGetUserByEmailRepository,
+} from '../../types/repositories/users.repository.ts';
 
 export class CreateUserUseCase {
   constructor(

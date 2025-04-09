@@ -1,10 +1,6 @@
 import { PostgresHelper } from '../../../db/postgres/helper.js';
 import { CreateUserParams } from '../../../types/users/CreateUserParams.ts';
 
-export interface ICreateUserRepository {
-  execute(createUserParams: CreateUserParams): Promise<any>; // Retorna uma Promise
-}
-
 export class PostgresCreateUserRepository {
   async execute(createUserParams: CreateUserParams) {
     await PostgresHelper.query(

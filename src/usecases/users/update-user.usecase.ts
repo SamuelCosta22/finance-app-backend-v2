@@ -2,7 +2,7 @@ import bcrypt from 'bcrypt';
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
 import { PostgresGetUserByEmailRepository } from '../../repositories/postgres/users/get-user-by-email.repository.ts';
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
-import { IUpdateUserRepository } from '../../repositories/postgres/users/update-user.repository.ts';
+import { IUpdateUserRepository } from '../../types/repositories/users.repository.ts';
 
 export class UpdateUserUseCase {
   constructor(private updateUserRepository: IUpdateUserRepository) {

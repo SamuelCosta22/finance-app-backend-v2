@@ -1,8 +1,6 @@
 import { PostgresHelper } from '../../../db/postgres/helper.js';
+import { IGetUserByIdRepository } from '../../../types/repositories/users.repository.ts';
 
-export interface IGetUserByIdRepository {
-  execute(userId: string): Promise<any>; // Retorna uma Promise
-}
 export class PostgresGetUserByIdRepository implements IGetUserByIdRepository {
   async execute(userId: string) {
     const user = await PostgresHelper.query(

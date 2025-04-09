@@ -1,4 +1,4 @@
-import { IDeleteUserRepository } from '../../repositories/postgres/users/delete-user.repository.ts';
+import { IDeleteUserRepository } from '../../types/repositories/users.repository.ts';
 
 export class DeleteUserUseCase {
   constructor(private deleteUserRepository: IDeleteUserRepository) {

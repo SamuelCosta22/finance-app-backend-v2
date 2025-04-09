@@ -1,5 +1,5 @@
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
-import { IUpdateUserRepository } from '../../repositories/postgres/users/update-user.repository.ts';
+import { IUpdateUserRepository } from '../../types/repositories/users.repository.ts';
 import {
   badRequest,
   checkIfEmailIsValid,

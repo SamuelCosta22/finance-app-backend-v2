@@ -1,5 +1,5 @@
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
-import { ICreateUserRepository } from '../../repositories/postgres/users/create-user.repository.ts';
+import { ICreateUserRepository } from '../../types/repositories/users.repository.ts';
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
 import {
   badRequest,

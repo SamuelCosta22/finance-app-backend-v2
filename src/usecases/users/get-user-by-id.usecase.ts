@@ -1,4 +1,4 @@
-import { IGetUserByIdRepository } from '../../repositories/postgres/users/get-user-by-id.repository.ts';
+import { IGetUserByIdRepository } from '../../types/repositories/users.repository.ts';
 
 export class GetUserByIdUseCase {
   constructor(private getUserByIdRepository: IGetUserByIdRepository) {
