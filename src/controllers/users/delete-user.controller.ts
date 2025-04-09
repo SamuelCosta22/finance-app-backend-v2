@@ -1,4 +1,4 @@
-import { DeleteUserUseCase } from '../../usecases/users/delete-user.usecase.ts';
+import { IDeleteUserRepository } from '../../repositories/postgres/users/delete-user.repository.ts';
 import {
   invalidIdResponse,
   userNotFoundResponse,
@@ -8,6 +8,10 @@ import {
 } from './helpers/index.ts';
 
 export class DeleteUserController {
+  constructor(private deleteUserUseCase: IDeleteUserRepository) {
+    this.deleteUserUseCase = deleteUserUseCase;
+  }
+
   async execute(httpRequest: any) {
     try {
       const userId = httpRequest.params.userId;
@@ -15,8 +19,7 @@ export class DeleteUserController {
 
       if (!idIsValid) return invalidIdResponse();
 
-      const deleteUserUseCase = new DeleteUserUseCase();
-      const deletedUser = deleteUserUseCase.execute(userId);
+      const deletedUser = this.deleteUserUseCase.execute(userId);
 
       if (!deletedUser) {
         return userNotFoundResponse();

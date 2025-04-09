@@ -12,6 +12,8 @@ import { CreateUserUseCase } from './usecases/users/create-user.usecase.ts';
 import { PostgresGetUserByEmailRepository } from './repositories/postgres/users/get-user-by-email.repository.ts';
 import { PostgresUpdateUserRepository } from './repositories/postgres/users/update-user.repository.ts';
 import { UpdateUserUseCase } from './usecases/users/update-user.usecase.ts';
+import { PostgresDeleteUserRepository } from './repositories/postgres/users/delete-user.repository.ts';
+import { DeleteUserUseCase } from './usecases/users/delete-user.usecase.ts';
 
 const app = express();
 
@@ -50,7 +52,10 @@ app.patch('/api/users/:userId', async (request, response) => {
 });
 
 app.delete('/api/users/:userId', async (request, response) => {
-  const deleteUserController = new DeleteUserController();
+  const deleteUserRepository = new PostgresDeleteUserRepository();
+  const deleteUserUseCase = new DeleteUserUseCase(deleteUserRepository);
+  const deleteUserController = new DeleteUserController(deleteUserUseCase);
+
   const { body, statusCode } = await deleteUserController.execute(request);
   response.status(statusCode).send(body);
 });
