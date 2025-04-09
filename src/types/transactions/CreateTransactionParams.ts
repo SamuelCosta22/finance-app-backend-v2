@@ -1,7 +1,7 @@
 export enum TransactionEnum {
-  'EARNING',
-  'EXPENSE',
-  'INVESTMENT',
+  EARNING = 'EARNING',
+  EXPENSE = 'EXPENSE',
+  INVESTMENT = 'INVESTMENT',
 }
 
 export type CreateTransactionsParams = {
