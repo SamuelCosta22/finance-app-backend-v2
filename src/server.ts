@@ -5,6 +5,8 @@ import { CreateUserController } from './controllers/users/create-user.controller
 import { DeleteUserController } from './controllers/users/delete-user.controller.ts';
 import { GetUserByIdController } from './controllers/users/get-user-by-id.controller.ts';
 import { UpdateUserController } from './controllers/users/update-user.controller.ts';
+import { PostgresGetUserByIdRepository } from './repositories/postgres/users/get-user-by-id.repository.ts';
+import { GetUserByIdUseCase } from './usecases/users/get-user-by-id.usecase.ts';
 
 const app = express();
 
@@ -12,7 +14,10 @@ app.use(cors());
 app.use(express.json());
 
 app.get('/api/users/:userId', async (request, response) => {
-  const getUserByIdController = new GetUserByIdController();
+  const getUserByIdRepository = new PostgresGetUserByIdRepository();
+  const getUserByIdUseCase = new GetUserByIdUseCase(getUserByIdRepository);
+  const getUserByIdController = new GetUserByIdController(getUserByIdUseCase);
+
   const { body, statusCode } = await getUserByIdController.execute(request);
   response.status(statusCode).send(body);
 });

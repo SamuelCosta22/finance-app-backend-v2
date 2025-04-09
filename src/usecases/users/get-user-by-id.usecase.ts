@@ -1,9 +1,11 @@
-import { PostgresGetUserByIdRepository } from '../../repositories/postgres/users/get-user-by-id.repository.ts';
+import { IGetUserByIdRepository } from '../../repositories/postgres/users/get-user-by-id.repository.ts';
 
 export class GetUserByIdUseCase {
+  constructor(private getUserByIdRepository: IGetUserByIdRepository) {
+    this.getUserByIdRepository = getUserByIdRepository;
+  }
   async execute(userId: string) {
-    const getUserByIdRepository = new PostgresGetUserByIdRepository();
-    const user = getUserByIdRepository.execute(userId);
+    const user = this.getUserByIdRepository.execute(userId);
 
     return user;
   }

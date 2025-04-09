@@ -1,4 +1,4 @@
-import { GetUserByIdUseCase } from '../../usecases/users/get-user-by-id.usecase.ts';
+import { IGetUserByIdRepository } from '../../repositories/postgres/users/get-user-by-id.repository.ts';
 import {
   checkIfIdIsValid,
   invalidIdResponse,
@@ -8,6 +8,10 @@ import {
 } from './helpers/index.ts';
 
 export class GetUserByIdController {
+  constructor(private getUserByIdUseCase: IGetUserByIdRepository) {
+    this.getUserByIdUseCase = getUserByIdUseCase;
+  }
+
   async execute(httpRequest: any) {
     try {
       const isIdValid = checkIfIdIsValid(httpRequest.params.userId);
@@ -15,8 +19,9 @@ export class GetUserByIdController {
         return invalidIdResponse();
       }
 
-      const getUserByIdUseCase = new GetUserByIdUseCase();
-      const user = await getUserByIdUseCase.execute(httpRequest.params.userId);
+      const user = await this.getUserByIdUseCase.execute(
+        httpRequest.params.userId,
+      );
 
       if (!user) return userNotFoundResponse();
 

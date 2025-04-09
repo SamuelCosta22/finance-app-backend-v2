@@ -1,5 +1,4 @@
 import { DeleteUserUseCase } from '../../usecases/users/delete-user.usecase.ts';
-import {} from './helpers/http.ts';
 import {
   invalidIdResponse,
   userNotFoundResponse,
