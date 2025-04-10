@@ -1,6 +1,7 @@
 import { IDeleteTransactionRepository } from '../../types/repositories/transactions.repository.ts';
 import { serverError, success } from '../helpers/http.ts';
 import { invalidIdResponse } from '../helpers/invalid-response.ts';
+import { transactionNotFoundResponse } from '../helpers/transactions-validators.ts';
 import { checkIfIdIsValid } from '../helpers/validations.ts';
 
 export class DeleteTransactionController {
@@ -16,6 +17,8 @@ export class DeleteTransactionController {
 
       const deletedTransaction =
         await this.deleteTransactionUseCase.execute(transactionId);
+
+      if (!deletedTransaction) return transactionNotFoundResponse();
 
       const { statusCode, body } = success(deletedTransaction);
       return { statusCode, body };

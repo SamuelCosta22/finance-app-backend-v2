@@ -1,5 +1,6 @@
 import validator from 'validator';
 import { TransactionEnum } from '../../types/transactions/CreateTransactionParams.ts';
+import { notFound } from './http.ts';
 
 export const checkIfAmountIsValid = (amount: number) => {
   if (typeof amount !== 'number') return false;
@@ -13,3 +14,9 @@ export const checkIfAmountIsValid = (amount: number) => {
 
 export const checkIfTypeIsValid = (type: TransactionEnum) =>
   ['EARNING', 'EXPENSE', 'INVESTMENT'].includes(type);
+
+export const transactionNotFoundResponse = () => {
+  return notFound({
+    message: 'Transaction not found.',
+  });
+};
