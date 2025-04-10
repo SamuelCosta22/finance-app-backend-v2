@@ -57,7 +57,7 @@ export class UpdateUserController {
         return badRequest({ message: 'Some provided field is blank' });
       }
 
-      const updatedUser = this.updateUserUseCase.execute(userId, params);
+      const updatedUser = await this.updateUserUseCase.execute(userId, params);
 
       const { statusCode, body } = success(updatedUser);
       return { statusCode, body };

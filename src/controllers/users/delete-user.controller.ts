@@ -19,7 +19,7 @@ export class DeleteUserController {
 
       if (!idIsValid) return invalidIdResponse();
 
-      const deletedUser = this.deleteUserUseCase.execute(userId);
+      const deletedUser = await this.deleteUserUseCase.execute(userId);
 
       if (!deletedUser) {
         return userNotFoundResponse();
