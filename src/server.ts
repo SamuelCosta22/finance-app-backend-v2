@@ -7,6 +7,7 @@ import { makeGetUserByIdController } from './factories/controllers/users/make-ge
 import { makeUpdateUserController } from './factories/controllers/users/make-update-user.controller.ts';
 import { makeCreateTransactionController } from './factories/controllers/transactions/make-create-transaction.controller.ts';
 import { makeGetTransactionsByUserIdController } from './factories/controllers/transactions/make-get-transactions-by-user-id.controller.ts';
+import { makeUpdateTransactionController } from './factories/controllers/transactions/make-update-transaction.controller.ts';
 
 const app = express();
 
@@ -49,6 +50,13 @@ app.post('/api/transactions', async (request, response) => {
   const createTransactionController = makeCreateTransactionController();
   const { body, statusCode } =
     await createTransactionController.execute(request);
+  response.status(statusCode).send(body);
+});
+
+app.patch('/api/transactions/:transactionId', async (request, response) => {
+  const updateTransactionController = makeUpdateTransactionController();
+  const { body, statusCode } =
+    await updateTransactionController.execute(request);
   response.status(statusCode).send(body);
 });
 

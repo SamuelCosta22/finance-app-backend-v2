@@ -1,4 +1,4 @@
-import { ICreateTransactionRepository } from '../../types/repositories/transactions.repository.ts';
+import { IUpdateTransactionRepository } from '../../types/repositories/transactions.repository.ts';
 import { badRequest, serverError, success } from '../helpers/http.ts';
 import { invalidIdResponse } from '../helpers/invalid-response.ts';
 import {
@@ -8,7 +8,7 @@ import {
 import { checkIfIdIsValid } from '../helpers/validations.ts';
 
 export class UpdateTransactionController {
-  constructor(private updateTransactionUseCase: ICreateTransactionRepository) {
+  constructor(private updateTransactionUseCase: IUpdateTransactionRepository) {
     this.updateTransactionUseCase = updateTransactionUseCase;
   }
 

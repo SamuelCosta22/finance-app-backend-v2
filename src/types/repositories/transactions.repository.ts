@@ -7,6 +7,13 @@ export interface ICreateTransactionRepository {
   ): Promise<any>;
 }
 
+export interface IUpdateTransactionRepository {
+  execute(
+    transactionId: string,
+    params: CreateTransactionsParams,
+  ): Promise<any>;
+}
+
 export interface IGetTransactionsByUserIdRepository {
   execute(userId: string): Promise<any>;
 }
