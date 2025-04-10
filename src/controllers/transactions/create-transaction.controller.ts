@@ -3,16 +3,16 @@ import {
   CreateTransactionsParams,
   TransactionEnum,
 } from '../../types/transactions/CreateTransactionParams.ts';
-import { badRequest, created, serverError } from '../users/helpers/http.ts';
-import { invalidIdResponse } from '../users/helpers/invalid-response.ts';
+import { badRequest, created, serverError } from '../helpers/http.ts';
+import { invalidIdResponse } from '../helpers/invalid-response.ts';
 import {
   checkIfAmountIsValid,
   checkIfTypeIsValid,
-} from '../users/helpers/transactions-validators.ts';
+} from '../helpers/transactions-validators.ts';
 import {
   checkIfIdIsValid,
   validateRequiredFields,
-} from '../users/helpers/validations.ts';
+} from '../helpers/validations.ts';
 
 export type HttpRequest = {
   body: CreateTransactionsParams;

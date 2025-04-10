@@ -8,11 +8,11 @@ import {
   invalidPasswordResponse,
   serverError,
   success,
-} from './helpers/index.ts';
+} from '../helpers/index.ts';
 import {
   checkIfEmailIsValid,
   checkIfPasswordIsValid,
-} from './helpers/users-validators.ts';
+} from '../helpers/users-validators.ts';
 
 export class UpdateUserController {
   constructor(private updateUserUseCase: IUpdateUserRepository) {

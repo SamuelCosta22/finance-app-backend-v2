@@ -5,7 +5,7 @@ import {
   serverError,
   success,
   checkIfIdIsValid,
-} from './helpers/index.ts';
+} from '../helpers/index.ts';
 
 export class DeleteUserController {
   constructor(private deleteUserUseCase: IDeleteUserRepository) {

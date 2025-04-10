@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { TransactionEnum } from '../../../types/transactions/CreateTransactionParams.ts';
+import { TransactionEnum } from '../../types/transactions/CreateTransactionParams.ts';
 
 export const checkIfAmountIsValid = (amount: number) => {
   const amountString = amount.toFixed(2);

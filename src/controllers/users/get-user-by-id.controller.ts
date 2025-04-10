@@ -5,7 +5,7 @@ import {
   serverError,
   success,
   userNotFoundResponse,
-} from './helpers/index.ts';
+} from '../helpers/index.ts';
 
 export class GetUserByIdController {
   constructor(private getUserByIdUseCase: IGetUserByIdRepository) {
