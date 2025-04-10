@@ -1,5 +1,5 @@
 import { UserNotFoundError } from '../../errors/user.ts';
-import { IGetTransactionsByUserIdRepository } from '../../types/repositories/transactions.repository.ts';
+import { GetTransactionsByUserIdUseCase } from '../../usecases/transactions/get-transactions-by-user-id.usecase.ts';
 import { badRequest, serverError, success } from '../helpers/http.ts';
 import {
   invalidIdResponse,
@@ -9,7 +9,7 @@ import { checkIfIdIsValid } from '../helpers/validations.ts';
 
 export class GetTransactionsByUserIdController {
   constructor(
-    private getTransactionsByUserIdUseCase: IGetTransactionsByUserIdRepository,
+    private getTransactionsByUserIdUseCase: GetTransactionsByUserIdUseCase,
   ) {
     this.getTransactionsByUserIdUseCase = getTransactionsByUserIdUseCase;
   }
