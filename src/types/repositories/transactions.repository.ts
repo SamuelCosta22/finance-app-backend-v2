@@ -3,3 +3,7 @@ import { CreateTransactionsParams } from '../transactions/CreateTransactionParam
 export interface ICreateTransactionRepository {
   execute(params: CreateTransactionsParams): Promise<any>;
 }
+
+export interface IGetTransactionsByUserIdRepository {
+  execute(userId: string): Promise<any>;
+}
