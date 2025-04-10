@@ -6,10 +6,13 @@ import {
 import { badRequest, created, serverError } from '../users/helpers/http.ts';
 import { invalidIdResponse } from '../users/helpers/invalid-response.ts';
 import {
+  checkIfAmountIsValid,
+  checkIfTypeIsValid,
+} from '../users/helpers/transactions-validators.ts';
+import {
   checkIfIdIsValid,
   validateRequiredFields,
 } from '../users/helpers/validations.ts';
-import validator from 'validator';
 
 export type HttpRequest = {
   body: CreateTransactionsParams;
@@ -42,19 +45,7 @@ export class CreateTransactionController {
         return invalidIdResponse();
       }
 
-      if (params.amount <= 0) {
-        return badRequest({
-          message: 'The amount must be greater than 0.',
-        });
-      }
-
-      const amountString = params.amount.toFixed(2);
-
-      const amountIsValid = validator.isCurrency(amountString, {
-        digits_after_decimal: [2],
-        allow_negatives: false,
-        decimal_separator: '.',
-      });
+      const amountIsValid = checkIfAmountIsValid(params.amount);
 
       if (!amountIsValid) {
         return badRequest({
@@ -63,7 +54,8 @@ export class CreateTransactionController {
       }
 
       const type = params.type.trim().toUpperCase() as TransactionEnum;
-      const typeIsValid = Object.values(TransactionEnum).includes(type);
+      const typeIsValid = checkIfTypeIsValid(type);
+
       if (!typeIsValid) {
         return badRequest({
           message: 'The type must be EARNING, EXPENSE or INVESTMENT.',
