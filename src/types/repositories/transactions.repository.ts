@@ -2,8 +2,8 @@ import { CreateTransactionsParams } from '../transactions/CreateTransactionParam
 
 export interface ICreateTransactionRepository {
   execute(
-    transactionId: string,
     params: CreateTransactionsParams,
+    transactionId?: string,
   ): Promise<any>;
 }
 
