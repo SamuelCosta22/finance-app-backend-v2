@@ -2,7 +2,7 @@ import { PostgresHelper } from '../../../db/postgres/helper.js';
 import { CreateTransactionsParams } from '../../../types/transactions/CreateTransactionParams.ts';
 
 export class PostgresUpdateTransactionRepository {
-  async execute(userId: string, input: CreateTransactionsParams) {
+  async execute(transactionId: string, input: CreateTransactionsParams) {
     const updateFields: string[] = [];
     const updateValues = [];
 
@@ -12,7 +12,7 @@ export class PostgresUpdateTransactionRepository {
       updateValues.push(input[typedKey]);
     });
 
-    updateValues.push(userId);
+    updateValues.push(transactionId);
 
     const updateQuery = `
                 UPDATE transactions
