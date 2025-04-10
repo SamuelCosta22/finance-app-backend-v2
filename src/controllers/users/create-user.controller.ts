@@ -3,14 +3,16 @@ import { ICreateUserRepository } from '../../types/repositories/users.repository
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
 import {
   badRequest,
-  checkIfEmailIsValid,
-  checkIfPasswordIsValid,
   created,
   emailIsAlreadyInUseResponse,
   invalidPasswordResponse,
   serverError,
   validateRequiredFields,
 } from './helpers/index.ts';
+import {
+  checkIfEmailIsValid,
+  checkIfPasswordIsValid,
+} from './helpers/users-validators.ts';
 
 export type HttpRequest = {
   body: CreateUserParams;

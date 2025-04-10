@@ -2,15 +2,17 @@ import { EmailAlreadyInUseError } from '../../errors/user.ts';
 import { IUpdateUserRepository } from '../../types/repositories/users.repository.ts';
 import {
   badRequest,
-  checkIfEmailIsValid,
   checkIfIdIsValid,
-  checkIfPasswordIsValid,
   emailIsAlreadyInUseResponse,
   invalidIdResponse,
   invalidPasswordResponse,
   serverError,
   success,
 } from './helpers/index.ts';
+import {
+  checkIfEmailIsValid,
+  checkIfPasswordIsValid,
+} from './helpers/users-validators.ts';
 
 export class UpdateUserController {
   constructor(private updateUserUseCase: IUpdateUserRepository) {
