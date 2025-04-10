@@ -2,6 +2,7 @@ import validator from 'validator';
 import { TransactionEnum } from '../../types/transactions/CreateTransactionParams.ts';
 
 export const checkIfAmountIsValid = (amount: number) => {
+  if (typeof amount !== 'number') return false;
   const amountString = amount.toFixed(2);
   return validator.isCurrency(amountString, {
     digits_after_decimal: [2],
