@@ -9,6 +9,7 @@ import {
   emailIsAlreadyInUseResponse,
   invalidPasswordResponse,
   serverError,
+  validateRequiredFields,
 } from './helpers/index.ts';
 
 export type HttpRequest = {
@@ -23,26 +24,26 @@ export class CreateUserController {
   async execute(httpRequest: HttpRequest) {
     try {
       const params = httpRequest.body;
-      type ParamsKeys = keyof typeof params;
 
       const requiredFields = ['first_name', 'last_name', 'email', 'password'];
-      for (const field of requiredFields) {
-        if (
-          !params[field as ParamsKeys] ||
-          params[field as ParamsKeys]?.trim().length === 0
-        ) {
-          return badRequest({ message: `Missing param: ${field}` });
-        }
 
-        const passwordIsValid = checkIfPasswordIsValid(params.password);
-        if (!passwordIsValid) {
-          return invalidPasswordResponse();
-        }
+      const { missingField, success } = validateRequiredFields(
+        params,
+        requiredFields,
+      );
 
-        const emailIsValid = checkIfEmailIsValid(params.email);
-        if (!emailIsValid) {
-          return emailIsAlreadyInUseResponse();
-        }
+      if (!success) {
+        return badRequest({ message: `Missing param: ${missingField}` });
+      }
+
+      const passwordIsValid = checkIfPasswordIsValid(params.password);
+      if (!passwordIsValid) {
+        return invalidPasswordResponse();
+      }
+
+      const emailIsValid = checkIfEmailIsValid(params.email);
+      if (!emailIsValid) {
+        return emailIsAlreadyInUseResponse();
       }
 
       const createdUser = await this.createUserUseCase.execute(params);

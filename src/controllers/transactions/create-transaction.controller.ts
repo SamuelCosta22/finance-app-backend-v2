@@ -5,7 +5,10 @@ import {
 } from '../../types/transactions/CreateTransactionParams.ts';
 import { badRequest, created, serverError } from '../users/helpers/http.ts';
 import { invalidIdResponse } from '../users/helpers/invalid-response.ts';
-import { checkIfIdIsValid } from '../users/helpers/validations.ts';
+import {
+  checkIfIdIsValid,
+  validateRequiredFields,
+} from '../users/helpers/validations.ts';
 import validator from 'validator';
 
 export type HttpRequest = {
@@ -20,16 +23,18 @@ export class CreateTransactionController {
   async execute(httpRequest: HttpRequest) {
     try {
       const params = httpRequest.body;
-      type ParamsKeys = keyof typeof params;
 
       const requiredFields = ['user_id', 'date', 'name', 'amount', 'type'];
 
-      for (const field of requiredFields) {
-        const value = params[field as ParamsKeys];
+      const requiredFieldsValidation = validateRequiredFields(
+        params,
+        requiredFields,
+      );
 
-        if (!value || value.toString().trim().length === 0) {
-          return badRequest({ message: `Missing param: ${field}` });
-        }
+      if (!requiredFieldsValidation.success) {
+        return badRequest({
+          message: `The field ${requiredFieldsValidation.missingField} is required.`,
+        });
       }
 
       const userIdIsValid = checkIfIdIsValid(params.user_id);
