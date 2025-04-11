@@ -19,3 +19,7 @@ export interface IDeleteUserRepository {
 export interface IUpdateUserRepository {
   execute(userId: string, input: CreateUserParams): Promise<any>;
 }
+
+export interface IGetUserBalanceRepository {
+  execute(userId: string): Promise<any>;
+}
