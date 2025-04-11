@@ -1,18 +1,9 @@
+import { ZodError } from 'zod';
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
+import { createUserSchema } from '../../schemas/user.ts';
 import { ICreateUserRepository } from '../../types/repositories/users.repository.ts';
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
-import {
-  badRequest,
-  created,
-  emailIsAlreadyInUseResponse,
-  invalidPasswordResponse,
-  serverError,
-  validateRequiredFields,
-} from '../helpers/index.ts';
-import {
-  checkIfEmailIsValid,
-  checkIfPasswordIsValid,
-} from '../helpers/users-validators.ts';
+import { badRequest, created, serverError } from '../helpers/index.ts';
 
 export type HttpRequest = {
   body: CreateUserParams;
@@ -27,31 +18,15 @@ export class CreateUserController {
     try {
       const params = httpRequest.body;
 
-      const requiredFields = ['first_name', 'last_name', 'email', 'password'];
-
-      const { missingField, success } = validateRequiredFields(
-        params,
-        requiredFields,
-      );
-
-      if (!success) {
-        return badRequest({ message: `Missing param: ${missingField}` });
-      }
-
-      const passwordIsValid = checkIfPasswordIsValid(params.password);
-      if (!passwordIsValid) {
-        return invalidPasswordResponse();
-      }
-
-      const emailIsValid = checkIfEmailIsValid(params.email);
-      if (!emailIsValid) {
-        return emailIsAlreadyInUseResponse();
-      }
+      await createUserSchema.parseAsync(params);
 
       const createdUser = await this.createUserUseCase.execute(params);
 
       return created({ createdUser });
     } catch (error) {
+      if (error instanceof ZodError) {
+        return badRequest({ message: error.errors[0].message });
+      }
       if (error instanceof EmailAlreadyInUseError) {
         return badRequest({ message: error.message });
       }
