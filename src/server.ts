@@ -9,6 +9,7 @@ import { makeCreateTransactionController } from './factories/controllers/transac
 import { makeGetTransactionsByUserIdController } from './factories/controllers/transactions/make-get-transactions-by-user-id.controller.ts';
 import { makeUpdateTransactionController } from './factories/controllers/transactions/make-update-transaction.controller.ts';
 import { makeDeleteTransactionController } from './factories/controllers/transactions/make-delete-transaction.controller.ts';
+import { makeGetUserBalanceController } from './factories/controllers/users/make-get-user-balance.controller.ts';
 
 const app = express();
 
@@ -36,6 +37,12 @@ app.patch('/api/users/:userId', async (request, response) => {
 app.delete('/api/users/:userId', async (request, response) => {
   const deleteUserController = makeDeleteUserController();
   const { body, statusCode } = await deleteUserController.execute(request);
+  response.status(statusCode).send(body);
+});
+
+app.get('/api/users/:userId/balance', async (request, response) => {
+  const getUserBalanceController = makeGetUserBalanceController();
+  const { body, statusCode } = await getUserBalanceController.execute(request);
   response.status(statusCode).send(body);
 });
 
