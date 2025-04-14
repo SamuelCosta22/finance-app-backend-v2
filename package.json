@@ -9,7 +9,7 @@
     "start": "node dist/index.js",
     "lint": "eslint src --fix",
     "migrations": "node src/db/postgres/migrations/exec.js",
-    "postinstall": "npx husky install"
+    "postinstall": "npx husky install && npx prisma generate"
   },
   "keywords": [],
   "author": "",
