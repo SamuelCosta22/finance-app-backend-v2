@@ -25,8 +25,12 @@ describe('Create User Controller', () => {
     const result = await createUserController.execute(httpRequest);
 
     //assert
-    expect(result.statusCode).toBe(201);
-    expect(result.body).toBe(httpRequest.body);
+    expect(result).toEqual({
+      statusCode: 201,
+      body: {
+        createdUser: httpRequest.body,
+      },
+    });
   });
 
   it('should return 400 if first_name is not provided', async () => {
@@ -43,7 +47,7 @@ describe('Create User Controller', () => {
     };
 
     //act
-    const result = await createUserController.execute(httpRequest);
+    const result = await createUserController.execute(httpRequest as any);
 
     //assert
     expect(result.statusCode).toBe(400);
@@ -63,7 +67,7 @@ describe('Create User Controller', () => {
     };
 
     //act
-    const result = await createUserController.execute(httpRequest);
+    const result = await createUserController.execute(httpRequest as any);
 
     //assert
     expect(result.statusCode).toBe(400);
@@ -83,7 +87,7 @@ describe('Create User Controller', () => {
     };
 
     //act
-    const result = await createUserController.execute(httpRequest);
+    const result = await createUserController.execute(httpRequest as any);
 
     //assert
     expect(result.statusCode).toBe(400);
@@ -124,7 +128,7 @@ describe('Create User Controller', () => {
     };
 
     //act
-    const result = await createUserController.execute(httpRequest);
+    const result = await createUserController.execute(httpRequest as any);
 
     //assert
     expect(result.statusCode).toBe(400);
