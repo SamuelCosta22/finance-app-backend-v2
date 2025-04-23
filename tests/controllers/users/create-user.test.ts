@@ -1,5 +1,5 @@
-import { EmailAlreadyInUseError } from '../../errors/user.ts';
-import { CreateUserController } from './create-user.controller.ts';
+import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
+import { CreateUserController } from '../../../src/controllers/users/create-user.controller.ts';
 import { faker } from '@faker-js/faker';
 
 class CreateUserUseCaseStub {
