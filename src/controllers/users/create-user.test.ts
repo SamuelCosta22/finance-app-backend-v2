@@ -1,12 +1,12 @@
 import { CreateUserController } from './create-user.controller.ts';
 
-describe('Create User Controller', () => {
-  class CreateUserUseCaseStub {
-    execute(user: any) {
-      return user;
-    }
+class CreateUserUseCaseStub {
+  async execute(user: any) {
+    return user;
   }
+}
 
+describe('Create User Controller', () => {
   it('should return 201 when creating a new user successfully', async () => {
     //arrange
     const createUserUseCase = new CreateUserUseCaseStub();
@@ -153,5 +153,28 @@ describe('Create User Controller', () => {
 
     //assert
     expect(result.statusCode).toBe(400);
+  });
+
+  it('should call CreateUserUseCase with correct params', async () => {
+    //arange
+    const createUserUseCase = new CreateUserUseCaseStub();
+    const createUserController = new CreateUserController(createUserUseCase);
+
+    const httpRequest = {
+      body: {
+        first_name: 'Samuel',
+        last_name: 'Costa',
+        email: 'samuelcosta@gmail.com',
+        password: '1234567',
+      },
+    };
+
+    const executeSpy = jest.spyOn(createUserUseCase, 'execute');
+
+    //act
+    await createUserController.execute(httpRequest);
+
+    //assert
+    expect(executeSpy).toHaveBeenCalledWith(httpRequest.body);
   });
 });
