@@ -2,7 +2,13 @@ import { faker } from '@faker-js/faker';
 import { DeleteUserController } from '../../../src/controllers/users/delete-user.controller.ts';
 
 class DeleteUserUseCaseStub {
-  async execute() {
+  async execute(): Promise<{
+    id: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    password: string;
+  } | null> {
     return {
       id: faker.string.uuid(),
       first_name: faker.person.firstName(),
@@ -49,5 +55,17 @@ describe('Delete User Controller', () => {
 
     //assert
     expect(result.statusCode).toBe(400);
+  });
+
+  it('should return 404 if user not found', async () => {
+    // arrange
+    const { deleteUserUseCase, sut } = makeSut();
+    jest.spyOn(deleteUserUseCase, 'execute').mockResolvedValueOnce(null);
+
+    // act
+    const result = await sut.execute(httpRequest);
+
+    // assert
+    expect(result.statusCode).toBe(404);
   });
 });
