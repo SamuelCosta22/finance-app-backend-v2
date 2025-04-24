@@ -17,8 +17,11 @@ export const createTransactionSchema = z.object({
       message: 'Name must have at least 3 characters.',
     }),
   date: z
-    .string({ message: 'Date is required.' })
-    .datetime({ message: 'Date must be a valid date.' }),
+    .union([
+      z.string().datetime({ message: 'Date must be a valid ISO date.' }),
+      z.date(),
+    ])
+    .transform((val) => (typeof val === 'string' ? new Date(val) : val)),
   type: z.enum(['EXPENSE', 'EARNING', 'INVESTMENT'], {
     required_error: 'Type is required.',
   }),
