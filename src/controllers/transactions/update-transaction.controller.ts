@@ -1,10 +1,8 @@
+import { ZodError } from 'zod';
+import { updateTransactionSchema } from '../../schemas/transaction.ts';
 import { IUpdateTransactionRepository } from '../../types/repositories/transactions.repository.ts';
 import { badRequest, serverError, success } from '../helpers/http.ts';
 import { invalidIdResponse } from '../helpers/invalid-response.ts';
-import {
-  checkIfAmountIsValid,
-  checkIfTypeIsValid,
-} from '../helpers/transactions-validators.ts';
 import { checkIfIdIsValid } from '../helpers/validations.ts';
 
 export class UpdateTransactionController {
@@ -20,32 +18,7 @@ export class UpdateTransactionController {
 
       const params = httpRequest.body;
 
-      const allowedFields = ['name', 'date', 'amount', 'type'];
-      const someFieldIsNotAllowed = Object.keys(params).some(
-        (field) => !allowedFields.includes(field),
-      );
-
-      if (someFieldIsNotAllowed) {
-        return badRequest({ message: 'Some provided field is not allowed.' });
-      }
-
-      if (params.amount) {
-        const amountIsValid = checkIfAmountIsValid(params.amount);
-        if (!amountIsValid) {
-          return badRequest({
-            message: 'The amount must be a valid currency.',
-          });
-        }
-      }
-
-      if (params.type) {
-        const typeIsValid = checkIfTypeIsValid(params.type);
-        if (!typeIsValid) {
-          return badRequest({
-            message: 'The type must be EARNING, EXPENSE or INVESTMENT.',
-          });
-        }
-      }
+      await updateTransactionSchema.parseAsync(params);
 
       const updatedTransaction = await this.updateTransactionUseCase.execute(
         httpRequest.params.transactionId,
@@ -55,6 +28,9 @@ export class UpdateTransactionController {
       const { statusCode, body } = success(updatedTransaction);
       return { statusCode, body };
     } catch (error) {
+      if (error instanceof ZodError) {
+        return badRequest({ message: error.errors[0].message });
+      }
       console.error(error);
       return serverError();
     }
