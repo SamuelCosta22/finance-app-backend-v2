@@ -107,4 +107,18 @@ describe('Update Transaction Controller', () => {
     //assert
     expect(result.statusCode).toBe(400);
   });
+
+  it('should return 500 when UpdateTransactionUseCase throws', async () => {
+    //arrange
+    const { updateTransactionUseCase, sut } = makeSut();
+    jest
+      .spyOn(updateTransactionUseCase, 'execute')
+      .mockRejectedValueOnce(new Error());
+
+    //act
+    const result = await sut.execute(httpRequest);
+
+    //assert
+    expect(result.statusCode).toBe(500);
+  });
 });
