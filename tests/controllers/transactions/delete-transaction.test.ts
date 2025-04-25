@@ -3,7 +3,14 @@ import { TransactionEnum } from '../../../src/types/transactions/CreateTransacti
 import { DeleteTransactionController } from '../../../src/controllers/transactions/delete-transaction.controller.ts';
 
 class DeleteTransactionUseCaseStub {
-  async execute() {
+  async execute(): Promise<{
+    user_id: string;
+    id: string;
+    name: string;
+    date: Date;
+    type: TransactionEnum;
+    amount: number;
+  } | null> {
     return {
       user_id: faker.string.uuid(),
       id: faker.string.uuid(),
@@ -47,5 +54,21 @@ describe('Delete Transaction Controller', () => {
 
     //assert
     expect(result.statusCode).toBe(400);
+  });
+
+  it('should return 404 when transaction is not found', async () => {
+    //arrange
+    const { deleteTransactionUseCaseStub, sut } = makeSut();
+    jest
+      .spyOn(deleteTransactionUseCaseStub, 'execute')
+      .mockResolvedValueOnce(null);
+
+    //act
+    const result = await sut.execute({
+      params: { transactionId: faker.string.uuid() },
+    });
+
+    //assert
+    expect(result.statusCode).toBe(404);
   });
 });
