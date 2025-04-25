@@ -2,9 +2,17 @@ import { faker } from '@faker-js/faker';
 import { TransactionEnum } from '../../../generated/prisma/client.js';
 import { GetTransactionsByUserIdController } from '../../../src/controllers/transactions/get-transactions-by-user-id.controller.ts';
 import { GetTransactionsByUserIdUseCase } from '../../../src/usecases/transactions/get-transactions-by-user-id.usecase.ts';
+import { UserNotFoundError } from '../../../src/errors/user.ts';
 
 class GetTransactionsByUserIdUseCaseStub {
-  async execute() {
+  async execute(): Promise<{
+    user_id: string;
+    id: string;
+    name: string;
+    date: Date;
+    type: TransactionEnum;
+    amount: number;
+  } | null> {
     return {
       user_id: faker.string.uuid(),
       id: faker.string.uuid(),
@@ -64,5 +72,21 @@ describe('Get Transactions By User Id', () => {
 
     //assert
     expect(result.statusCode).toBe(400);
+  });
+
+  it('should return 404 when GetUserByIdUseCase throws UserNotFoundError', async () => {
+    //arrange
+    const { getTransactionsByUserIdUseCase, sut } = makeSut();
+    jest
+      .spyOn(getTransactionsByUserIdUseCase, 'execute')
+      .mockRejectedValueOnce(new UserNotFoundError(faker.string.uuid()));
+
+    //act
+    const result = await sut.execute({
+      query: { userId: faker.string.uuid() },
+    });
+
+    //assert
+    expect(result.statusCode).toBe(404);
   });
 });
