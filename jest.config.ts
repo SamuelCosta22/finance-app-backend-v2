@@ -8,8 +8,17 @@ import type { Config } from 'jest';
 const config: Config = {
   preset: 'ts-jest',
   collectCoverage: true,
+  collectCoverageFrom: ['src/**/*.ts'],
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
+  transformIgnorePatterns: [
+    '/node_modules/',
+    '/generated/prisma/', // Ignora a pasta do Prisma no transform
+  ],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '/generated/prisma/', // Ignora a pasta do Prisma na cobertura
+  ],
 };
 
 export default config;

@@ -11,7 +11,8 @@
     "migrations": "node src/db/postgres/migrations/exec.js",
     "postinstall": "npx husky install && npx prisma generate",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --passWithNoTests --silent --coverage"
   },
   "keywords": [],
   "author": "",
