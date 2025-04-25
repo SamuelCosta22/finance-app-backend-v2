@@ -33,10 +33,23 @@ describe('Get Transactions By User Id', () => {
 
     //act
     const result = await sut.execute({
-      query: { user_id: faker.string.uuid() },
+      query: { userId: faker.string.uuid() },
     });
 
     //assert
     expect(result.statusCode).toBe(200);
+  });
+
+  it('should return 400 when missing userId param', async () => {
+    //arrange
+    const { sut } = makeSut();
+
+    //act
+    const result = await sut.execute({
+      query: { userId: undefined },
+    });
+
+    //assert
+    expect(result.statusCode).toBe(400);
   });
 });
