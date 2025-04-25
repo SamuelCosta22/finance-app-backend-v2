@@ -72,7 +72,7 @@ describe('Delete Transaction Controller', () => {
     expect(result.statusCode).toBe(404);
   });
 
-  it('should return 500 when DeleteTransactionUseCaseThrows', async () => {
+  it('should return 500 when DeleteTransactionUseCase Throws', async () => {
     //arrange
     const { deleteTransactionUseCaseStub, sut } = makeSut();
     jest
