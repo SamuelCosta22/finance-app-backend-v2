@@ -5,7 +5,7 @@ export interface IHashGeneratorAdapter {
 }
 
 export class PasswordHasherAdapter {
-  async execute(password: string): Promise<string> {
-    return await bcrypt.hash(password, 10);
+  execute(password: string): Promise<string> {
+    return bcrypt.hash(password, 10);
   }
 }
