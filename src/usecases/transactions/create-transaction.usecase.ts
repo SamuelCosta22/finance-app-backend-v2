@@ -1,16 +1,18 @@
-import { v4 as uuidv4 } from 'uuid';
 import { UserNotFoundError } from '../../errors/user.ts';
 import { CreateTransactionsParams } from '../../types/transactions/CreateTransactionParams.ts';
 import { ICreateTransactionRepository } from '../../types/repositories/transactions.repository.ts';
 import { IGetUserByIdRepository } from '../../types/repositories/users.repository.ts';
+import { IIdGeneratorAdapter } from '../../adapters/id-generator.ts';
 
 export class CreateTransactionUseCase {
   constructor(
     private createTransactionRepository: ICreateTransactionRepository,
     private getUserByIdRepository: IGetUserByIdRepository,
+    private idGeneratorAdapter: IIdGeneratorAdapter,
   ) {
     this.createTransactionRepository = createTransactionRepository;
     this.getUserByIdRepository = getUserByIdRepository;
+    this.idGeneratorAdapter = idGeneratorAdapter;
   }
 
   async execute(params: CreateTransactionsParams) {
@@ -21,7 +23,7 @@ export class CreateTransactionUseCase {
       throw new UserNotFoundError(userId);
     }
 
-    const transactionId = uuidv4();
+    const transactionId = this.idGeneratorAdapter.execute();
 
     const transaction = await this.createTransactionRepository.execute({
       ...params,
