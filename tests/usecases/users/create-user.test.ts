@@ -1,26 +1,42 @@
 import { faker } from '@faker-js/faker';
 import { CreateUserUseCase } from '../../../src/usecases/users/create-user.usecase.ts';
+import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
+import { CreateUserParams } from '../../../src/types/users/CreateUserParams.ts';
+
+interface UserEntity {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+}
 
 class GetUserByEmailRepositoryStub {
-  async execute() {
+  async execute(): Promise<UserEntity | null> {
     return null;
   }
 }
 
 class CreateUserRepositoryStub {
-  async execute(user: any) {
-    return user;
+  async execute(createUserParams: CreateUserParams): Promise<UserEntity> {
+    return {
+      id: 'generated_id',
+      first_name: createUserParams.first_name,
+      last_name: createUserParams.last_name,
+      email: createUserParams.email,
+      password: 'hashed_password',
+    };
   }
 }
 
 class PasswordHashedAdapterStub {
-  async execute() {
+  async execute(): Promise<string> {
     return 'hashed_password';
   }
 }
 
 class IdGeneratorAdapterStub {
-  execute() {
+  execute(): string {
     return 'generated_id';
   }
 }
@@ -33,8 +49,8 @@ describe('Create User Use Case', () => {
     const idGeneratorAdapter = new IdGeneratorAdapterStub();
 
     const sut = new CreateUserUseCase(
-      getUserByEmailRepository,
       createUserRepository,
+      getUserByEmailRepository,
       passwordHashedAdapter,
       idGeneratorAdapter,
     );
@@ -48,20 +64,43 @@ describe('Create User Use Case', () => {
     };
   };
 
+  const user = {
+    id: 'some_id',
+    first_name: faker.person.firstName(),
+    last_name: faker.person.lastName(),
+    email: faker.internet.email(),
+    password: faker.internet.password({
+      length: 7,
+    }),
+  };
+
   it('should successfully create a user', async () => {
     //arrange
     const { sut } = makeSut();
+
     //act
-    const createdUser = await sut.execute({
-      first_name: faker.person.firstName(),
-      last_name: faker.person.lastName(),
-      email: faker.internet.email(),
-      password: faker.internet.password({
-        length: 7,
-      }),
-    });
+    const createdUser = await sut.execute(user);
 
     //assert
     expect(createdUser).toBeTruthy();
+    expect(createdUser).toEqual({
+      ...user,
+      id: 'generated_id',
+      password: 'hashed_password',
+    });
+  });
+
+  it('should throw an EmailAlreadyInUseError if GetUserByEmailRepository returns a user', async () => {
+    //arrange
+    const { sut, getUserByEmailRepository } = makeSut();
+    jest.spyOn(getUserByEmailRepository, 'execute').mockResolvedValueOnce(user);
+
+    //act
+    const promise = sut.execute(user);
+
+    //assert
+    await expect(promise).rejects.toThrow(
+      new EmailAlreadyInUseError(user.email),
+    );
   });
 });
