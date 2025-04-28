@@ -1,20 +1,22 @@
-import { v4 as uuidv4 } from 'uuid';
+import { IIdGeneratorAdapter } from '../../adapters/id-generator.ts';
+import { IHashGeneratorAdapter } from '../../adapters/password-hasher.ts';
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
 import {
   ICreateUserRepository,
   IGetUserByEmailRepository,
 } from '../../types/repositories/users.repository.ts';
-import { IHashGeneratorAdapter } from '../../adapters/password-hasher.ts';
 
 export class CreateUserUseCase {
   constructor(
     private createUserRepository: ICreateUserRepository,
     private getUserByEmailRepository: IGetUserByEmailRepository,
     private passwordHasherAdapter: IHashGeneratorAdapter,
+    private idGeneratorAdapter: IIdGeneratorAdapter,
   ) {
     this.createUserRepository = createUserRepository;
     this.getUserByEmailRepository = getUserByEmailRepository;
     this.passwordHasherAdapter = passwordHasherAdapter;
+    this.idGeneratorAdapter = idGeneratorAdapter;
   }
 
   async execute(input: CreateUserUseCaseInput) {
@@ -26,7 +28,7 @@ export class CreateUserUseCase {
       throw new EmailAlreadyInUseError(input.email);
     }
 
-    const userId = uuidv4();
+    const userId = this.idGeneratorAdapter.execute();
     const hashedPassword = await this.passwordHasherAdapter.execute(
       input.password,
     );
