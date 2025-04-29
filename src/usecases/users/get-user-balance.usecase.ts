@@ -1,3 +1,4 @@
+import { UserNotFoundError } from '../../errors/user.ts';
 import {
   IGetUserBalanceRepository,
   IGetUserByIdRepository,
@@ -15,7 +16,7 @@ export class GetUserBalanceUseCase {
   async execute(userId: string) {
     const user = await this.getUserByIdRepository.execute(userId);
     if (!user) {
-      throw new Error('User not found');
+      throw new UserNotFoundError(userId);
     }
 
     const balance = await this.getUserBalanceRepository.execute(userId);
