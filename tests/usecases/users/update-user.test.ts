@@ -73,7 +73,7 @@ describe('Get User By Id Use Case', () => {
   it('should update user successfully (with email)', async () => {
     //arrange
     const { sut, getUserByEmailRepository } = makeSut();
-    const gerUserByEmailRepositorySpy = jest.spyOn(
+    const getUserByEmailRepositorySpy = jest.spyOn(
       getUserByEmailRepository,
       'execute',
     );
@@ -85,7 +85,26 @@ describe('Get User By Id Use Case', () => {
     });
 
     //assert
-    expect(gerUserByEmailRepositorySpy).toHaveBeenCalledWith(email);
+    expect(getUserByEmailRepositorySpy).toHaveBeenCalledWith(email);
+    expect(result).toBe(user);
+  });
+
+  it('should update user successfully (with password)', async () => {
+    //arrange
+    const { sut, passwordHashedAdapter } = makeSut();
+    const passwordHashedAdapterSpy = jest.spyOn(
+      passwordHashedAdapter,
+      'execute',
+    );
+    const password = faker.internet.password();
+
+    //act
+    const result = await sut.execute(faker.string.uuid(), {
+      password,
+    });
+
+    //assert
+    expect(passwordHashedAdapterSpy).toHaveBeenCalledWith(password);
     expect(result).toBe(user);
   });
 });
