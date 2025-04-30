@@ -38,9 +38,10 @@ class PasswordHashedAdapterStub {
 
 describe('Get User By Id Use Case', () => {
   const makeSut = () => {
-    const getUserByEmailRepository = new GetUserByEmailRepositoryStub();
     const updateUserRepository = new UpdateUserRepositoryStub();
     const passwordHashedAdapter = new PasswordHashedAdapterStub();
+    const getUserByEmailRepository = new GetUserByEmailRepositoryStub();
+
     const sut = new UpdateUserUseCase(
       updateUserRepository,
       passwordHashedAdapter,
@@ -50,6 +51,7 @@ describe('Get User By Id Use Case', () => {
       //getUserByEmailRepository,
       updateUserRepository,
       passwordHashedAdapter,
+      getUserByEmailRepository,
       sut,
     };
   };
@@ -70,14 +72,20 @@ describe('Get User By Id Use Case', () => {
 
   it('should update user successfully (with email)', async () => {
     //arrange
-    const { sut } = makeSut();
+    const { sut, getUserByEmailRepository } = makeSut();
+    const gerUserByEmailRepositorySpy = jest.spyOn(
+      getUserByEmailRepository,
+      'execute',
+    );
+    const email = faker.internet.email();
 
     //act
     const result = await sut.execute(faker.string.uuid(), {
-      email: faker.internet.email(),
+      email,
     });
 
     //assert
+    expect(gerUserByEmailRepositorySpy).toHaveBeenCalledWith(email);
     expect(result).toBe(user);
   });
 });
