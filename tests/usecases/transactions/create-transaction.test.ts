@@ -22,7 +22,7 @@ const createTransactionParams = {
   type: TransactionEnum.EARNING,
 };
 
-class CreateTransactionUseCaseStub {
+class CreateTransactionRepositoryStub {
   async execute(transaction: CreateTransactionsParams) {
     return transaction;
   }
@@ -43,17 +43,17 @@ class IdGeneratorAdapterStub {
 describe('Create Transaction Use Case', () => {
   const makeSut = () => {
     //Switch Under Test
-    const createTransactionUseCase = new CreateTransactionUseCaseStub();
+    const createTransactionRepository = new CreateTransactionRepositoryStub();
     const getUserByIdRepository = new GetUserByIdRepositoryStub();
     const idGeneratorAdapter = new IdGeneratorAdapterStub();
     const sut = new CreateTransactionUseCase(
-      createTransactionUseCase,
+      createTransactionRepository,
       getUserByIdRepository,
       idGeneratorAdapter,
     );
 
     return {
-      createTransactionUseCase,
+      createTransactionRepository,
       getUserByIdRepository,
       idGeneratorAdapter,
       sut,
@@ -98,5 +98,20 @@ describe('Create Transaction Use Case', () => {
 
     //assert
     expect(idGeneratorAdapterSpy).toHaveBeenCalled();
+  });
+
+  it('should call CreateTransactionRepository with correct params', async () => {
+    //arrange
+    const { createTransactionRepository, sut } = makeSut();
+    const executeSpy = jest.spyOn(createTransactionRepository, 'execute');
+
+    //act
+    await sut.execute(createTransactionParams);
+
+    //assert
+    expect(executeSpy).toHaveBeenCalledWith({
+      ...createTransactionParams,
+      id: 'generated_id',
+    });
   });
 });
