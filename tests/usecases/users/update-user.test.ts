@@ -1,13 +1,13 @@
 import { faker } from '@faker-js/faker';
 import { UpdateUserUseCase } from '../../../src/usecases/users/update-user.usecase.ts';
 
-// interface UserEntity {
-//   id: string;
-//   first_name?: string;
-//   last_name?: string;
-//   email?: string;
-//   password?: string;
-// }
+interface UserEntity {
+  id: string;
+  first_name?: string;
+  last_name?: string;
+  email?: string;
+  password?: string;
+}
 
 const user = {
   first_name: faker.person.firstName(),
@@ -18,11 +18,11 @@ const user = {
   }),
 };
 
-// class GetUserByEmailRepositoryStub {
-//   async execute(): Promise<UserEntity | null> {
-//     return null;
-//   }
-// }
+class GetUserByEmailRepositoryStub {
+  async execute(): Promise<UserEntity | null> {
+    return null;
+  }
+}
 
 class UpdateUserRepositoryStub {
   async execute() {
@@ -38,13 +38,13 @@ class PasswordHashedAdapterStub {
 
 describe('Get User By Id Use Case', () => {
   const makeSut = () => {
-    //const getUserByEmailRepository = new GetUserByEmailRepositoryStub();
+    const getUserByEmailRepository = new GetUserByEmailRepositoryStub();
     const updateUserRepository = new UpdateUserRepositoryStub();
     const passwordHashedAdapter = new PasswordHashedAdapterStub();
     const sut = new UpdateUserUseCase(
-      //getUserByEmailRepository,
       updateUserRepository,
       passwordHashedAdapter,
+      getUserByEmailRepository,
     );
     return {
       //getUserByEmailRepository,
