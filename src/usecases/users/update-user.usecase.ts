@@ -4,7 +4,7 @@ import {
   IGetUserByEmailRepository,
   IUpdateUserRepository,
 } from '../../types/repositories/users.repository.ts';
-import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
+import { UpdateUserParams } from '../../types/users/CreateUserParams.ts';
 
 export class UpdateUserUseCase {
   constructor(
@@ -16,7 +16,7 @@ export class UpdateUserUseCase {
     this.passwordHasherAdapter = passwordHasherAdapter;
   }
 
-  async execute(userId: string, input: CreateUserParams) {
+  async execute(userId: string, input: UpdateUserParams) {
     if (input.email) {
       const userWithProvidedEmail = await this.getUserByEmailRepository.execute(
         input.email,

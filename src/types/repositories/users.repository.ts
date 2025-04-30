@@ -1,4 +1,7 @@
-import { CreateUserParams } from '../users/CreateUserParams.ts';
+import {
+  CreateUserParams,
+  UpdateUserParams,
+} from '../users/CreateUserParams.ts';
 
 export interface IGetUserByIdRepository {
   execute(userId: string): Promise<any>;
@@ -17,7 +20,7 @@ export interface IDeleteUserRepository {
 }
 
 export interface IUpdateUserRepository {
-  execute(userId: string, input: CreateUserParams): Promise<any>;
+  execute(userId: string, input: UpdateUserParams): Promise<any>;
 }
 
 export interface IGetUserBalanceRepository {
