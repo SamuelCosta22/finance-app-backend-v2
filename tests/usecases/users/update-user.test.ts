@@ -162,4 +162,20 @@ describe('Get User By Id Use Case', () => {
     //assert
     await expect(promise).rejects.toThrow();
   });
+
+  it('should throw if PasswordHashedAdapter throws', async () => {
+    //arrange
+    const { sut, passwordHashedAdapter } = makeSut();
+    jest
+      .spyOn(passwordHashedAdapter, 'execute')
+      .mockRejectedValueOnce(new Error());
+
+    //act
+    const promise = sut.execute(faker.string.uuid(), {
+      email: user.password,
+    });
+
+    //assert
+    await expect(promise).rejects.toThrow();
+  });
 });
