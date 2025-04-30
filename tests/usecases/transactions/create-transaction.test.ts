@@ -1,0 +1,73 @@
+import { faker } from '@faker-js/faker';
+import {
+  CreateTransactionsParams,
+  TransactionEnum,
+} from '../../../src/types/transactions/CreateTransactionParams.ts';
+import { CreateTransactionUseCase } from '../../../src/usecases/transactions/create-transaction.usecase.ts';
+
+const user = {
+  first_name: faker.person.firstName(),
+  last_name: faker.person.lastName(),
+  email: faker.internet.email(),
+  password: faker.internet.password({
+    length: 7,
+  }),
+};
+
+const createTransactionParams = {
+  user_id: faker.string.uuid(),
+  name: faker.person.fullName(),
+  date: faker.date.anytime(),
+  amount: Number(faker.finance.amount()),
+  type: TransactionEnum.EARNING,
+};
+
+class CreateTransactionUseCaseStub {
+  async execute(transaction: CreateTransactionsParams) {
+    return transaction;
+  }
+}
+
+class GetUserByIdRepositoryStub {
+  async execute(userId: string) {
+    return { ...user, id: userId };
+  }
+}
+
+class IdGeneratorAdapterStub {
+  execute(): string {
+    return 'generated_id';
+  }
+}
+
+describe('Create Transaction Use Case', () => {
+  const makeSut = () => {
+    //Switch Under Test
+    const createTransactionUseCase = new CreateTransactionUseCaseStub();
+    const getUserByIdRepository = new GetUserByIdRepositoryStub();
+    const idGeneratorAdapter = new IdGeneratorAdapterStub();
+    const sut = new CreateTransactionUseCase(
+      createTransactionUseCase,
+      getUserByIdRepository,
+      idGeneratorAdapter,
+    );
+
+    return {
+      createTransactionUseCase,
+      getUserByIdRepository,
+      idGeneratorAdapter,
+      sut,
+    };
+  };
+
+  it('should create transaction successfully', async () => {
+    //arrange
+    const { sut } = makeSut();
+
+    //act
+    const result = await sut.execute(createTransactionParams);
+
+    //assert
+    expect(result).toEqual({ ...createTransactionParams, id: 'random_id' });
+  });
+});
