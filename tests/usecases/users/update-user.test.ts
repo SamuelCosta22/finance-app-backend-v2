@@ -1,8 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { UpdateUserUseCase } from '../../../src/usecases/users/update-user.usecase.ts';
+import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
 
 interface UserEntity {
-  id: string;
+  id?: string;
   first_name?: string;
   last_name?: string;
   email?: string;
@@ -106,5 +107,21 @@ describe('Get User By Id Use Case', () => {
     //assert
     expect(passwordHashedAdapterSpy).toHaveBeenCalledWith(password);
     expect(result).toBe(user);
+  });
+
+  it('should throw EmailAlreadyInUseError if email is already in use', async () => {
+    //arrange
+    const { sut, getUserByEmailRepository } = makeSut();
+    jest.spyOn(getUserByEmailRepository, 'execute').mockResolvedValue(user);
+
+    //act
+    const promise = sut.execute(faker.string.uuid(), {
+      email: user.email,
+    });
+
+    //assert
+    await expect(promise).rejects.toThrow(
+      new EmailAlreadyInUseError(user.email),
+    );
   });
 });
