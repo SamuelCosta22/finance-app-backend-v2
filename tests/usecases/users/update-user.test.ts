@@ -146,4 +146,20 @@ describe('Get User By Id Use Case', () => {
       password: 'hashed_password',
     });
   });
+
+  it('should throw if GetUserByEmailRepository throws', async () => {
+    //arrange
+    const { sut, getUserByEmailRepository } = makeSut();
+    jest
+      .spyOn(getUserByEmailRepository, 'execute')
+      .mockRejectedValueOnce(new Error());
+
+    //act
+    const promise = sut.execute(faker.string.uuid(), {
+      email: user.email,
+    });
+
+    //assert
+    await expect(promise).rejects.toThrow();
+  });
 });
