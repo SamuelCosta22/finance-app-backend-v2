@@ -172,7 +172,26 @@ describe('Get User By Id Use Case', () => {
 
     //act
     const promise = sut.execute(faker.string.uuid(), {
-      email: user.password,
+      password: faker.internet.password(),
+    });
+
+    //assert
+    await expect(promise).rejects.toThrow();
+  });
+
+  it('should throw if UpdateUserRepository throws', async () => {
+    //arrange
+    const { sut, updateUserRepository } = makeSut();
+    jest
+      .spyOn(updateUserRepository, 'execute')
+      .mockRejectedValueOnce(new Error());
+
+    //act
+    const promise = sut.execute(faker.string.uuid(), {
+      first_name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
     });
 
     //assert
