@@ -1,11 +1,14 @@
-import { EmailAlreadyInUseError } from '../../errors/user.ts';
-import { PostgresGetUserByEmailRepository } from '../../repositories/postgres/users/get-user-by-email.repository.ts';
-import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
-import { IUpdateUserRepository } from '../../types/repositories/users.repository.ts';
 import { IHashGeneratorAdapter } from '../../adapters/password-hasher.ts';
+import { EmailAlreadyInUseError } from '../../errors/user.ts';
+import {
+  IGetUserByEmailRepository,
+  IUpdateUserRepository,
+} from '../../types/repositories/users.repository.ts';
+import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
 
 export class UpdateUserUseCase {
   constructor(
+    private getUserByEmailRepository: IGetUserByEmailRepository,
     private updateUserRepository: IUpdateUserRepository,
     private passwordHasherAdapter: IHashGeneratorAdapter,
   ) {
@@ -15,8 +18,7 @@ export class UpdateUserUseCase {
 
   async execute(userId: string, input: CreateUserParams) {
     if (input.email) {
-      const getUserByEmailRepository = new PostgresGetUserByEmailRepository();
-      const userWithProvidedEmail = await getUserByEmailRepository.execute(
+      const userWithProvidedEmail = await this.getUserByEmailRepository.execute(
         input.email,
       );
 
