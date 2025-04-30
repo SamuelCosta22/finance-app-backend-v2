@@ -124,4 +124,26 @@ describe('Get User By Id Use Case', () => {
       new EmailAlreadyInUseError(user.email),
     );
   });
+
+  it('should call UpdateUserRepository with correct params', async () => {
+    //arrange
+    const { updateUserRepository, sut } = makeSut();
+    const updateUserRepositorySpy = jest.spyOn(updateUserRepository, 'execute');
+    const userId = faker.string.uuid();
+    const updateUserParams = {
+      first_name: faker.person.firstName(),
+      last_name: faker.person.lastName(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+    };
+
+    //act
+    await sut.execute(userId, updateUserParams);
+
+    //assert
+    expect(updateUserRepositorySpy).toHaveBeenCalledWith(userId, {
+      ...updateUserParams,
+      password: 'hashed_password',
+    });
+  });
 });
