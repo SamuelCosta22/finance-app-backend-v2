@@ -4,6 +4,15 @@ import {
   TransactionEnum,
 } from '../../../src/types/transactions/CreateTransactionParams.ts';
 import { CreateTransactionUseCase } from '../../../src/usecases/transactions/create-transaction.usecase.ts';
+import { UserNotFoundError } from '../../../src/errors/user.ts';
+
+interface UserEntity {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+}
 
 const user = {
   first_name: faker.person.firstName(),
@@ -29,7 +38,7 @@ class CreateTransactionRepositoryStub {
 }
 
 class GetUserByIdRepositoryStub {
-  async execute(userId: string) {
+  async execute(userId: string): Promise<UserEntity | null> {
     return { ...user, id: userId };
   }
 }
@@ -113,5 +122,19 @@ describe('Create Transaction Use Case', () => {
       ...createTransactionParams,
       id: 'generated_id',
     });
+  });
+
+  it('should throw UserNotFoundError if user does not exist', async () => {
+    //arrange
+    const { getUserByIdRepository, sut } = makeSut();
+    jest.spyOn(getUserByIdRepository, 'execute').mockResolvedValue(null);
+
+    //act
+    const promise = sut.execute(createTransactionParams);
+
+    //assert
+    await expect(promise).rejects.toThrow(
+      new UserNotFoundError(createTransactionParams.user_id),
+    );
   });
 });
