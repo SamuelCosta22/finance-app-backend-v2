@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
-import { TransactionEnum } from '../../../generated/prisma/client.js';
 import { GetTransactionsByUserIdController } from '../../../src/controllers/transactions/get-transactions-by-user-id.controller.ts';
 import { GetTransactionsByUserIdUseCase } from '../../../src/usecases/transactions/get-transactions-by-user-id.usecase.ts';
 import { UserNotFoundError } from '../../../src/errors/user.ts';
+import { TransactionEnum } from '@prisma/client';
 
 class GetTransactionsByUserIdUseCaseStub {
   async execute(): Promise<{
