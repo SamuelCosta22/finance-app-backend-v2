@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { UpdateTransactionController } from '../../../src/controllers/transactions/update-transaction.controller.ts';
-import { TransactionEnum } from '../../../generated/prisma/client.js';
+import { TransactionEnum } from '@prisma/client';
 
 class UpdateTransactionUseCaseStub {
   async execute() {
