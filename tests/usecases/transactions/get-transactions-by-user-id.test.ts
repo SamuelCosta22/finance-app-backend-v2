@@ -76,12 +76,28 @@ describe('Get Transactions By User Id Use Case', () => {
       getUserByIdRepository,
       'execute',
     );
+    const id = faker.string.uuid();
+
+    //act
+    await sut.execute(id);
+
+    //assert
+    expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(id);
+  });
+
+  it('should call GetTransactionsByUserIdRepository with correct params', async () => {
+    //arrange
+    const { getTransactionsByUserIdRepository, sut } = makeSut();
+    const getTransactionsByUserIdRepositorySpy = jest.spyOn(
+      getTransactionsByUserIdRepository,
+      'execute',
+    );
     const userId = faker.string.uuid();
 
     //act
     await sut.execute(userId);
 
     //assert
-    expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(userId);
+    expect(getTransactionsByUserIdRepositorySpy).toHaveBeenCalledWith(userId);
   });
 });
