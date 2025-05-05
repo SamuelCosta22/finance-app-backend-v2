@@ -1,5 +1,5 @@
 import { IUpdateTransactionRepository } from '../../types/repositories/transactions.repository.ts';
-import { CreateTransactionsParams } from '../../types/transactions/CreateTransactionParams.ts';
+import { UpdateTransactionsParams } from '../../types/transactions/CreateTransactionParams.ts';
 
 export class UpdateTransactionUseCase {
   constructor(
@@ -8,7 +8,7 @@ export class UpdateTransactionUseCase {
     this.updateTransactionRepository = updateTransactionRepository;
   }
 
-  async execute(transactionId: string, params: CreateTransactionsParams) {
+  async execute(transactionId: string, params: UpdateTransactionsParams) {
     const transaction = await this.updateTransactionRepository.execute(
       transactionId,
       params,

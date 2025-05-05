@@ -1,4 +1,7 @@
-import { CreateTransactionsParams } from '../transactions/CreateTransactionParams.ts';
+import {
+  CreateTransactionsParams,
+  UpdateTransactionsParams,
+} from '../transactions/CreateTransactionParams.ts';
 
 export interface IGetTransactionsByUserIdRepository {
   execute(userId: string): Promise<any>;
@@ -18,6 +21,6 @@ export interface IDeleteTransactionRepository {
 export interface IUpdateTransactionRepository {
   execute(
     transactionId: string,
-    params: CreateTransactionsParams,
+    params: UpdateTransactionsParams,
   ): Promise<any>;
 }
