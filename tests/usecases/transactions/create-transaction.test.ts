@@ -1,5 +1,4 @@
 import { UserNotFoundError } from '../../../src/errors/user.ts';
-import { CreateTransactionsParams } from '../../../src/types/transactions/CreateTransactionParams.ts';
 import { CreateTransactionUseCase } from '../../../src/usecases/transactions/create-transaction.usecase.ts';
 import { transaction } from '../../fixtures/transaction.ts';
 import { user, UserEntity } from '../../fixtures/user.ts';
@@ -10,7 +9,7 @@ const createTransactionParams = {
 };
 
 class CreateTransactionRepositoryStub {
-  async execute(transaction: CreateTransactionsParams) {
+  async execute() {
     return transaction;
   }
 }
@@ -55,7 +54,7 @@ describe('Create Transaction Use Case', () => {
     const result = await sut.execute(createTransactionParams);
 
     //assert
-    expect(result).toEqual({ ...createTransactionParams, id: 'generated_id' });
+    expect(result).toEqual(transaction);
   });
 
   it('should call GetUserByIdRepository with correct params', async () => {

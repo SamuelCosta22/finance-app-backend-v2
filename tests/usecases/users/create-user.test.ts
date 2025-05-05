@@ -12,10 +12,8 @@ class GetUserByEmailRepositoryStub {
 class CreateUserRepositoryStub {
   async execute(createUserParams: CreateUserParams): Promise<UserEntity> {
     return {
+      ...createUserParams,
       id: 'generated_id',
-      first_name: createUserParams.first_name,
-      last_name: createUserParams.last_name,
-      email: createUserParams.email,
       password: 'hashed_password',
     };
   }
