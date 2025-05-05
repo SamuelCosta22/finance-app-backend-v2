@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker';
 import { UpdateUserController } from '../../../src/controllers/users/update-user.controller.ts';
 import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
+import { user } from '../../fixtures/user.ts';
 
 class UpdateUserUseCaseStub {
-  async execute(user: any) {
+  async execute() {
     return user;
   }
 }
@@ -24,7 +25,6 @@ describe('Update User Controller', () => {
     body: {
       first_name: faker.person.firstName(),
       last_name: faker.person.lastName(),
-      email: faker.internet.email(),
       password: faker.internet.password({
         length: 7,
       }),

@@ -1,9 +1,10 @@
 import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
 import { CreateUserController } from '../../../src/controllers/users/create-user.controller.ts';
 import { faker } from '@faker-js/faker';
+import { user } from '../../fixtures/user.ts';
 
 class CreateUserUseCaseStub {
-  async execute(user: any) {
+  async execute() {
     return user;
   }
 }
@@ -19,12 +20,8 @@ describe('Create User Controller', () => {
 
   const httpRequest = {
     body: {
-      first_name: faker.person.firstName(),
-      last_name: faker.person.lastName(),
-      email: faker.internet.email(),
-      password: faker.internet.password({
-        length: 7,
-      }),
+      ...user,
+      id: undefined,
     },
   };
 
@@ -39,7 +36,7 @@ describe('Create User Controller', () => {
     expect(result).toEqual({
       statusCode: 201,
       body: {
-        createdUser: httpRequest.body,
+        createdUser: user,
       },
     });
   });

@@ -1,5 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { GetUserByIdController } from '../../../src/controllers/users/get-user-by-id.controller.ts';
+import { user } from '../../fixtures/user.ts';
 
 class GetUserByIdUseCaseStub {
   async execute(): Promise<{
@@ -9,15 +10,7 @@ class GetUserByIdUseCaseStub {
     email: string;
     password: string;
   } | null> {
-    return {
-      id: faker.string.uuid(),
-      first_name: faker.person.firstName(),
-      last_name: faker.person.lastName(),
-      email: faker.internet.email(),
-      password: faker.internet.password({
-        length: 7,
-      }),
-    };
+    return user;
   }
 }
 
