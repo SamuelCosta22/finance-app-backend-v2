@@ -21,6 +21,7 @@ const config: Config = {
   ],
   globalSetup: '<rootDir>/jest.global-setup.ts',
   setupFiles: ['<rootDir>/jest.setup.ts'],
+  setupFilesAfterEnv: ['<rootDir>/jest.setup-after-env.ts'],
 };
 
 export default config;
