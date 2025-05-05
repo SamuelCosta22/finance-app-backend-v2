@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
-import { TransactionEnum } from '../../../src/types/transactions/CreateTransactionParams.ts';
 import { DeleteTransactionController } from '../../../src/controllers/transactions/delete-transaction.controller.ts';
+import { TransactionEnum } from '../../../src/types/transactions/CreateTransactionParams.ts';
+import { transaction } from '../../fixtures/transaction.ts';
 
 class DeleteTransactionUseCaseStub {
   async execute(): Promise<{
@@ -11,14 +12,7 @@ class DeleteTransactionUseCaseStub {
     type: TransactionEnum;
     amount: number;
   } | null> {
-    return {
-      user_id: faker.string.uuid(),
-      id: faker.string.uuid(),
-      name: faker.commerce.productName(),
-      date: faker.date.anytime(),
-      type: TransactionEnum.INVESTMENT,
-      amount: Number(faker.finance.amount()),
-    };
+    return transaction;
   }
 }
 

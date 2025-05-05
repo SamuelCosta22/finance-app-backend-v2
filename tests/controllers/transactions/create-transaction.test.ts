@@ -1,9 +1,9 @@
 import { CreateTransactionController } from '../../../src/controllers/transactions/create-transaction.controller.ts';
-import { faker } from '@faker-js/faker';
 import { TransactionEnum } from '../../../src/types/transactions/CreateTransactionParams.ts';
+import { transaction } from '../../fixtures/transaction.ts';
 
 class CreateTransactionUseCaseStub {
-  async execute(transaction: any) {
+  async execute() {
     return transaction;
   }
 }
@@ -19,11 +19,8 @@ describe('Create Transaction Controller', () => {
 
   const httpRequest = {
     body: {
-      user_id: faker.string.uuid(),
-      name: faker.commerce.productName(),
-      date: faker.date.anytime(),
-      type: TransactionEnum.EARNING,
-      amount: Number(faker.finance.amount()),
+      ...transaction,
+      id: undefined,
     },
   };
 

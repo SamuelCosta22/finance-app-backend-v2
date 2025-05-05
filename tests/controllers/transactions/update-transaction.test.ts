@@ -1,17 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { UpdateTransactionController } from '../../../src/controllers/transactions/update-transaction.controller.ts';
 import { TransactionEnum } from '@prisma/client';
+import { transaction } from '../../fixtures/transaction.ts';
 
 class UpdateTransactionUseCaseStub {
   async execute() {
-    return {
-      user_id: faker.string.uuid(),
-      id: faker.string.uuid(),
-      name: faker.commerce.productName(),
-      date: faker.date.anytime(),
-      type: TransactionEnum.INVESTMENT,
-      amount: Number(faker.finance.amount()),
-    };
+    return transaction;
   }
 }
 

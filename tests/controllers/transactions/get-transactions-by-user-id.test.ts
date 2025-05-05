@@ -3,6 +3,7 @@ import { GetTransactionsByUserIdController } from '../../../src/controllers/tran
 import { GetTransactionsByUserIdUseCase } from '../../../src/usecases/transactions/get-transactions-by-user-id.usecase.ts';
 import { UserNotFoundError } from '../../../src/errors/user.ts';
 import { TransactionEnum } from '@prisma/client';
+import { transaction } from '../../fixtures/transaction.ts';
 
 class GetTransactionsByUserIdUseCaseStub {
   async execute(): Promise<{
@@ -13,14 +14,7 @@ class GetTransactionsByUserIdUseCaseStub {
     type: TransactionEnum;
     amount: number;
   } | null> {
-    return {
-      user_id: faker.string.uuid(),
-      id: faker.string.uuid(),
-      name: faker.commerce.productName(),
-      date: faker.date.anytime(),
-      type: TransactionEnum.INVESTMENT,
-      amount: Number(faker.finance.amount()),
-    };
+    return transaction;
   }
 }
 
