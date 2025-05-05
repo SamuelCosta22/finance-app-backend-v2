@@ -1,23 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { UpdateUserUseCase } from '../../../src/usecases/users/update-user.usecase.ts';
 import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
-
-interface UserEntity {
-  id?: string;
-  first_name?: string;
-  last_name?: string;
-  email?: string;
-  password?: string;
-}
-
-const user = {
-  first_name: faker.person.firstName(),
-  last_name: faker.person.lastName(),
-  email: faker.internet.email(),
-  password: faker.internet.password({
-    length: 7,
-  }),
-};
+import { user, UserEntity } from '../../fixtures/user.ts';
 
 class GetUserByEmailRepositoryStub {
   async execute(): Promise<UserEntity | null> {

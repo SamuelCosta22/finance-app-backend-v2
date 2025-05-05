@@ -10,6 +10,13 @@ export const user = {
   }),
 };
 
+export const userBalance = {
+  earnings: faker.finance.amount(),
+  expenses: faker.finance.amount(),
+  investments: faker.finance.amount(),
+  balance: faker.finance.amount(),
+};
+
 export interface UserEntity {
   id: string;
   first_name: string;

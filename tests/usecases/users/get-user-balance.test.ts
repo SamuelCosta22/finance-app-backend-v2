@@ -1,13 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { GetUserBalanceUseCase } from '../../../src/usecases/users/get-user-balance.usecase.ts';
 import { UserNotFoundError } from '../../../src/errors/user.ts';
-
-const userBalance = {
-  earnings: faker.finance.amount(),
-  expenses: faker.finance.amount(),
-  investments: faker.finance.amount(),
-  balance: faker.finance.amount(),
-};
+import { user, userBalance } from '../../fixtures/user.ts';
 
 class GetUserByIdRepositoryStub {
   async execute(): Promise<{
@@ -16,14 +10,7 @@ class GetUserByIdRepositoryStub {
     email: string;
     password: string;
   } | null> {
-    return {
-      first_name: faker.person.firstName(),
-      last_name: faker.person.lastName(),
-      email: faker.internet.email(),
-      password: faker.internet.password({
-        length: 7,
-      }),
-    };
+    return user;
   }
 }
 

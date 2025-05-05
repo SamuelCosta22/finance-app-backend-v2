@@ -1,15 +1,7 @@
-import { faker } from '@faker-js/faker';
-import { CreateUserUseCase } from '../../../src/usecases/users/create-user.usecase.ts';
 import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
 import { CreateUserParams } from '../../../src/types/users/CreateUserParams.ts';
-
-interface UserEntity {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-}
+import { CreateUserUseCase } from '../../../src/usecases/users/create-user.usecase.ts';
+import { user, UserEntity } from '../../fixtures/user.ts';
 
 class GetUserByEmailRepositoryStub {
   async execute(): Promise<UserEntity | null> {
@@ -62,16 +54,6 @@ describe('Create User Use Case', () => {
       passwordHashedAdapter,
       idGeneratorAdapter,
     };
-  };
-
-  const user = {
-    id: 'some_id',
-    first_name: faker.person.firstName(),
-    last_name: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password({
-      length: 7,
-    }),
   };
 
   it('should successfully create a user', async () => {

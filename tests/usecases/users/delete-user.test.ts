@@ -1,14 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { DeleteUserUseCase } from '../../../src/usecases/users/delete-user.usecase.ts';
-
-const user = {
-  first_name: faker.person.firstName(),
-  last_name: faker.person.lastName(),
-  email: faker.internet.email(),
-  password: faker.internet.password({
-    length: 7,
-  }),
-};
+import { user } from '../../fixtures/user.ts';
 
 class DeleteUserRepositoryUseCaseStub {
   async execute() {
