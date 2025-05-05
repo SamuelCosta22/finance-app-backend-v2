@@ -19,6 +19,7 @@ const config: Config = {
     '/node_modules/',
     '/generated/prisma/', // Ignora a pasta do Prisma na cobertura
   ],
+  setupFiles: ['<rootDir>/jest.setup.ts'],
 };
 
 export default config;

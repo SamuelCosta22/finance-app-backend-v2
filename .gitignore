@@ -1,6 +1,7 @@
 node_modules
 dist
 .env
+.env.test
 src/db/postgres/connection_variables.ts
 /generated
 /coverage
