@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-import { TransactionEnum } from '../../generated/prisma/client.js';
+import { TransactionEnum } from '../../src/types/transactions/CreateTransactionParams.ts';
 
 export const transaction = {
   id: faker.string.uuid(),

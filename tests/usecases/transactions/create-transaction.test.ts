@@ -1,34 +1,12 @@
-import { faker } from '@faker-js/faker';
-import {
-  CreateTransactionsParams,
-  TransactionEnum,
-} from '../../../src/types/transactions/CreateTransactionParams.ts';
-import { CreateTransactionUseCase } from '../../../src/usecases/transactions/create-transaction.usecase.ts';
 import { UserNotFoundError } from '../../../src/errors/user.ts';
-
-interface UserEntity {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-}
-
-const user = {
-  first_name: faker.person.firstName(),
-  last_name: faker.person.lastName(),
-  email: faker.internet.email(),
-  password: faker.internet.password({
-    length: 7,
-  }),
-};
+import { CreateTransactionsParams } from '../../../src/types/transactions/CreateTransactionParams.ts';
+import { CreateTransactionUseCase } from '../../../src/usecases/transactions/create-transaction.usecase.ts';
+import { transaction } from '../../fixtures/transaction.ts';
+import { user, UserEntity } from '../../fixtures/user.ts';
 
 const createTransactionParams = {
-  user_id: faker.string.uuid(),
-  name: faker.person.fullName(),
-  date: faker.date.anytime(),
-  amount: Number(faker.finance.amount()),
-  type: TransactionEnum.EARNING,
+  ...transaction,
+  id: undefined,
 };
 
 class CreateTransactionRepositoryStub {
@@ -38,8 +16,8 @@ class CreateTransactionRepositoryStub {
 }
 
 class GetUserByIdRepositoryStub {
-  async execute(userId: string): Promise<UserEntity | null> {
-    return { ...user, id: userId };
+  async execute(): Promise<UserEntity | null> {
+    return { ...user };
   }
 }
 

@@ -1,22 +1,9 @@
-import { faker } from '@faker-js/faker';
-import { TransactionEnum } from '../../../generated/prisma/client.js';
 import { DeleteTransactionUseCase } from '../../../src/usecases/transactions/delete-transaction.usecase.ts';
-
-const transaction = {
-  id: faker.string.uuid(),
-  user_id: faker.string.uuid(),
-  name: faker.person.fullName(),
-  date: faker.date.anytime(),
-  amount: Number(faker.finance.amount()),
-  type: TransactionEnum.EARNING,
-};
+import { transaction } from '../../fixtures/transaction.ts';
 
 class DeleteTransactionRepositoryStub {
-  async execute(transactionId: string) {
-    return {
-      ...transaction,
-      id: transactionId,
-    };
+  async execute() {
+    return transaction;
   }
 }
 
@@ -39,7 +26,7 @@ describe('Create Transaction Use Case', () => {
     const result = await sut.execute(transaction.id);
 
     //assert
-    expect(result).toEqual({ ...transaction, id: transaction.id });
+    expect(result).toEqual(transaction);
   });
 
   it('should call DeleteTransactionRepository with correct params', async () => {

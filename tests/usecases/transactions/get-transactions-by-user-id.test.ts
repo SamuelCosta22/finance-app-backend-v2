@@ -1,24 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { GetTransactionsByUserIdUseCase } from '../../../src/usecases/transactions/get-transactions-by-user-id.usecase.ts';
 import { UserNotFoundError } from '../../../src/errors/user.ts';
-
-interface UserEntity {
-  id: string;
-  first_name: string;
-  last_name: string;
-  email: string;
-  password: string;
-}
-
-const user = {
-  id: faker.string.uuid(),
-  first_name: faker.person.firstName(),
-  last_name: faker.person.lastName(),
-  email: faker.internet.email(),
-  password: faker.internet.password({
-    length: 7,
-  }),
-};
+import { user, UserEntity } from '../../fixtures/user.ts';
 
 class GetTransactionsByUserIdRepositoryStub {
   async execute(): Promise<[]> {
