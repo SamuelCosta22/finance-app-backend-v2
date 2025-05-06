@@ -10,7 +10,7 @@
     "lint": "eslint src --fix",
     "migrations": "node src/db/postgres/migrations/exec.js",
     "postinstall": "npx husky install && npx prisma generate",
-    "test": "jest --passWithNoTests --silent",
+    "test": "jest --passWithNoTests --silent --runInBand",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "npm run test -- --coverage"
   },

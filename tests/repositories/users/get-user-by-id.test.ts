@@ -5,11 +5,11 @@ import { user as fakeUser } from '../../fixtures/user.ts';
 describe('Get User By Id Repository', () => {
   it('should get a user by id on db', async () => {
     //arrange
-    const user = prisma.user.create({ data: fakeUser });
+    const user = await prisma.user.create({ data: fakeUser });
     const sut = new PostgresGetUserByIdRepository();
 
     //act
-    const result = await sut.execute(fakeUser.id);
+    const result = await sut.execute(user.id);
 
     //assert
     expect(result).toStrictEqual(user);

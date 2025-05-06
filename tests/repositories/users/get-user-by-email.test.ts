@@ -5,11 +5,11 @@ import { user as fakeUser } from '../../fixtures/user.ts';
 describe('Get User By Email Repository', () => {
   it('should get a user by email on db', async () => {
     //arrange
-    const user = prisma.user.create({ data: fakeUser });
+    const user = await prisma.user.create({ data: fakeUser });
     const sut = new PostgresGetUserByEmailRepository();
 
     //act
-    const result = await sut.execute(fakeUser.email);
+    const result = await sut.execute(user.email);
 
     //assert
     expect(result).toStrictEqual(user);

@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 import { prisma } from '../../../src/lib/prisma.ts';
 import { PostgresGetUserBalanceRepository } from '../../../src/repositories/postgres/users/get-user-balance.repository.ts';
 import { user as fakeUser } from '../../fixtures/user.ts';
-import { TransactionEnum } from '../../../generated/prisma/client.js';
+import { TransactionEnum } from '../../../src/types/transactions/CreateTransactionParams.ts';
 
 describe('Get User Balance Repository', () => {
   it('should get user balance on db', async () => {

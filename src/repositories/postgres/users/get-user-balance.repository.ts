@@ -1,5 +1,5 @@
-import { TransactionEnum } from '../../../../generated/prisma/client.js';
 import { prisma } from '../../../lib/prisma.ts';
+import { TransactionEnum } from '../../../types/transactions/CreateTransactionParams.ts';
 
 export class PostgresGetUserBalanceRepository {
   async execute(userId: string) {
