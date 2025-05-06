@@ -16,12 +16,13 @@ describe('Update User Repository', () => {
     //arrange
     const user = await prisma.user.create({ data: fakeUser });
     const sut = new PostgresUpdateUserRepository();
+    const expected = { ...updateUserParams, id: user.id };
 
     //act
-    const result = await sut.execute(user.id, fakeUser);
+    const result = await sut.execute(user.id, expected);
 
     //assert
-    expect(result).toStrictEqual(updateUserParams);
+    expect(result).toStrictEqual(expected);
   });
 
   it('should call Prisma with correct params', async () => {
