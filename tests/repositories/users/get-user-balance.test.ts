@@ -77,7 +77,7 @@ describe('Get User Balance Repository', () => {
     expect(prismaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakeUser.id,
-        type: TransactionEnum.E,
+        type: TransactionEnum.EXPENSE,
       },
       _sum: {
         amount: true,
@@ -86,7 +86,7 @@ describe('Get User Balance Repository', () => {
     expect(prismaSpy).toHaveBeenCalledWith({
       where: {
         user_id: fakeUser.id,
-        type: TransactionEnum.EARNING,
+        type: TransactionEnum.INVESTMENT,
       },
       _sum: {
         amount: true,

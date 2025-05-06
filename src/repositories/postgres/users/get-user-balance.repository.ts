@@ -1,3 +1,4 @@
+import { TransactionEnum } from '../../../../generated/prisma/client.js';
 import { prisma } from '../../../lib/prisma.ts';
 
 export class PostgresGetUserBalanceRepository {
@@ -7,7 +8,7 @@ export class PostgresGetUserBalanceRepository {
     } = await prisma.transaction.aggregate({
       where: {
         user_id: userId,
-        type: 'EXPENSE',
+        type: TransactionEnum.EXPENSE,
       },
       _sum: {
         amount: true,
@@ -19,7 +20,7 @@ export class PostgresGetUserBalanceRepository {
     } = await prisma.transaction.aggregate({
       where: {
         user_id: userId,
-        type: 'EARNING',
+        type: TransactionEnum.EARNING,
       },
       _sum: {
         amount: true,
@@ -31,7 +32,7 @@ export class PostgresGetUserBalanceRepository {
     } = await prisma.transaction.aggregate({
       where: {
         user_id: userId,
-        type: 'INVESTMENT',
+        type: TransactionEnum.INVESTMENT,
       },
       _sum: {
         amount: true,
