@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { prisma } from '../../../src/lib/prisma.ts';
 import { PostgresGetUserBalanceRepository } from '../../../src/repositories/postgres/users/get-user-balance.repository.ts';
 import { user as fakeUser } from '../../fixtures/user.ts';
+import { TransactionEnum } from '../../../generated/prisma/client.js';
 
 describe('Get User Balance Repository', () => {
   describe('Get User Balance Repository', () => {
@@ -51,6 +52,45 @@ describe('Get User Balance Repository', () => {
       expect(result.expenses.toString()).toBe('1000');
       expect(result.investments.toString()).toBe('3000');
       expect(result.balance.toString()).toBe('16000');
+    });
+  });
+
+  it('should call Prisma with correct params', async () => {
+    //arrange
+    const sut = new PostgresGetUserBalanceRepository();
+    const prismaSpy = jest.spyOn(prisma.transaction, 'aggregate');
+
+    //act
+    await sut.execute(fakeUser.id);
+
+    //assert
+    expect(prismaSpy).toHaveBeenCalledTimes(3);
+    expect(prismaSpy).toHaveBeenCalledWith({
+      where: {
+        user_id: fakeUser.id,
+        type: TransactionEnum.EARNING,
+      },
+      _sum: {
+        amount: true,
+      },
+    });
+    expect(prismaSpy).toHaveBeenCalledWith({
+      where: {
+        user_id: fakeUser.id,
+        type: TransactionEnum.E,
+      },
+      _sum: {
+        amount: true,
+      },
+    });
+    expect(prismaSpy).toHaveBeenCalledWith({
+      where: {
+        user_id: fakeUser.id,
+        type: TransactionEnum.EARNING,
+      },
+      _sum: {
+        amount: true,
+      },
     });
   });
 });
