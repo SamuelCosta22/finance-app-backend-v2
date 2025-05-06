@@ -91,4 +91,18 @@ it('should call Prisma with correct params', async () => {
       amount: true,
     },
   });
+
+  it('should throw if Prisma throws', async () => {
+    //arrange
+    const sut = new PostgresGetUserBalanceRepository();
+    jest
+      .spyOn(prisma.transaction, 'aggregate')
+      .mockRejectedValueOnce(new Error());
+
+    //act
+    const promise = sut.execute(fakeUser.id);
+
+    //assert
+    await expect(promise).rejects.toThrow();
+  });
 });
