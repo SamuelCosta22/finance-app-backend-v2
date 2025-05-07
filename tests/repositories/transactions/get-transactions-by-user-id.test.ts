@@ -45,4 +45,18 @@ describe('Get Transactions By User Id Repository', () => {
       },
     });
   });
+
+  it('should throw if Prisma throws', async () => {
+    //arrange
+    const sut = new PostgresGetTransactionsByUserIdRepository();
+    jest
+      .spyOn(prisma.transaction, 'findMany')
+      .mockRejectedValueOnce(new Error());
+
+    //act
+    const promise = sut.execute(user.id);
+
+    //assert
+    await expect(promise).rejects.toThrow();
+  });
 });
