@@ -10,7 +10,7 @@
     "lint": "eslint src --fix",
     "migrations": "node src/db/postgres/migrations/exec.js",
     "postinstall": "npx husky install && npx prisma generate",
-    "test": "jest --passWithNoTests --silent --runInBand",
+    "test": "jest --passWithNoTests --silent --runInBand --detectOpenHandles --forceExit",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "npm run test -- --coverage"
   },
@@ -29,6 +29,7 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.14.0",
     "@types/pg": "^8.11.11",
+    "@types/supertest": "^6.0.3",
     "@types/validator": "^13.12.3",
     "@typescript-eslint/eslint-plugin": "^8.29.0",
     "@typescript-eslint/parser": "^8.29.0",

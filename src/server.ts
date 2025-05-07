@@ -4,7 +4,7 @@ import express from 'express';
 import { transactionRouter } from './routes/transaction.ts';
 import { userRouter } from './routes/user.ts';
 
-const app = express();
+export const app = express();
 
 app.use(cors());
 app.use(express.json());
