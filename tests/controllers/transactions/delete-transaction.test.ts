@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { DeleteTransactionController } from '../../../src/controllers/transactions/delete-transaction.controller.ts';
 import { TransactionEnum } from '../../../src/types/transactions/CreateTransactionParams.ts';
 import { transaction } from '../../fixtures/transaction.ts';
+import { TransactionNotFoundError } from '../../../src/errors/transaction.ts';
 
 class DeleteTransactionUseCaseStub {
   async execute(): Promise<{
@@ -55,7 +56,7 @@ describe('Delete Transaction Controller', () => {
     const { deleteTransactionUseCaseStub, sut } = makeSut();
     jest
       .spyOn(deleteTransactionUseCaseStub, 'execute')
-      .mockResolvedValueOnce(null);
+      .mockRejectedValueOnce(new TransactionNotFoundError(faker.string.uuid()));
 
     //act
     const result = await sut.execute({
