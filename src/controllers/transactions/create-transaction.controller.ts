@@ -3,6 +3,8 @@ import { createTransactionSchema } from '../../schemas/transaction.ts';
 import { ICreateTransactionRepository } from '../../types/repositories/transactions.repository.ts';
 import { CreateTransactionsParams } from '../../types/transactions/CreateTransactionParams.ts';
 import { badRequest, created, serverError } from '../helpers/http.ts';
+import { UserNotFoundError } from '../../errors/user.ts';
+import { userNotFoundResponse } from '../helpers/invalid-response.ts';
 
 export type HttpRequest = {
   body: CreateTransactionsParams;
@@ -26,6 +28,8 @@ export class CreateTransactionController {
       if (error instanceof ZodError) {
         return badRequest({ message: error.errors[0].message });
       }
+
+      if (error instanceof UserNotFoundError) return userNotFoundResponse();
       console.error(error);
       return serverError();
     }
