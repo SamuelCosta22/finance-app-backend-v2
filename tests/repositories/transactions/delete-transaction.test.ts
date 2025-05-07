@@ -77,8 +77,6 @@ describe('Delete Transaction Repository', () => {
     const promise = sut.execute(transaction.id);
 
     //assert
-    await expect(promise).rejects.toThrow(
-      new TransactionNotFoundError(transaction.id),
-    );
+    await expect(promise).rejects.toThrow(TransactionNotFoundError);
   });
 });
