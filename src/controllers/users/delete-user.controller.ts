@@ -1,3 +1,4 @@
+import { UserNotFoundError } from '../../errors/user.ts';
 import { IDeleteUserRepository } from '../../types/repositories/users.repository.ts';
 import {
   invalidIdResponse,
@@ -28,6 +29,7 @@ export class DeleteUserController {
       const { statusCode, body } = success(deletedUser);
       return { statusCode, body };
     } catch (error) {
+      if (error instanceof UserNotFoundError) return userNotFoundResponse();
       console.log(error);
       return serverError();
     }
