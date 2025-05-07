@@ -13,9 +13,10 @@ describe('User Routes E2E Tests', () => {
   });
 
   it('GET /api/users/:id should return 200 when user is found', async () => {
-    const { body: createdUser } = await request(app)
+    const { body } = await request(app)
       .post('/api/users')
       .send({ ...user, id: undefined });
+    const createdUser = body.createdUser;
 
     const response = await request(app).get(`/api/users/${createdUser.id}`);
 
@@ -24,9 +25,10 @@ describe('User Routes E2E Tests', () => {
   });
 
   it('PATCH /api/users/:id should return 200 when user is updated', async () => {
-    const { body: createdUser } = await request(app)
+    const { body } = await request(app)
       .post('/api/users')
       .send({ ...user, id: undefined });
+    const createdUser = body.createdUser;
 
     const updateUserParams = {
       first_name: faker.person.firstName(),
@@ -47,9 +49,10 @@ describe('User Routes E2E Tests', () => {
   });
 
   it('DELETE /api/users/:id should return 200 when user is deleted', async () => {
-    const { body: createdUser } = await request(app)
+    const { body } = await request(app)
       .post('/api/users')
       .send({ ...user, id: undefined });
+    const createdUser = body.createdUser;
 
     const response = await request(app).delete(`/api/users/${createdUser.id}`);
 
