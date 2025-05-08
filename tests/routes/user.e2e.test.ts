@@ -169,4 +169,17 @@ describe('User Routes E2E Tests', () => {
 
     expect(response.status).toBe(400);
   });
+
+  it('PATCH /api/users/:id should return 400 when password is too short', async () => {
+    const response = await request(app)
+      .patch(`/api/users/${faker.string.uuid()}`)
+      .send({
+        first_name: faker.person.firstName(),
+        last_name: faker.person.lastName(),
+        email: faker.internet.email(),
+        password: '123',
+      });
+
+    expect(response.status).toBe(400);
+  });
 });
