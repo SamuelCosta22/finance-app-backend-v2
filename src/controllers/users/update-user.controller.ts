@@ -1,5 +1,8 @@
 import { ZodError } from 'zod';
-import { EmailAlreadyInUseError } from '../../errors/user.ts';
+import {
+  EmailAlreadyInUseError,
+  UserNotFoundError,
+} from '../../errors/user.ts';
 import { updateUserChema } from '../../schemas/user.ts';
 import { IUpdateUserRepository } from '../../types/repositories/users.repository.ts';
 import {
@@ -8,6 +11,7 @@ import {
   invalidIdResponse,
   serverError,
   success,
+  userNotFoundResponse,
 } from '../helpers/index.ts';
 
 export class UpdateUserController {
@@ -37,6 +41,9 @@ export class UpdateUserController {
       }
       if (error instanceof EmailAlreadyInUseError) {
         return badRequest({ message: error.message });
+      }
+      if (error instanceof UserNotFoundError) {
+        return userNotFoundResponse();
       }
       console.error(error);
       return serverError();
