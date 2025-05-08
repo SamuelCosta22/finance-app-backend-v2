@@ -4,5 +4,84 @@
     "title": "FSC Finance App API",
     "description": "API for FSC Finance App that allows users to manage their finances.",
     "version": "1.0.0"
+  },
+  "paths": {
+    "/api/users": {
+      "post": {
+        "tags": ["Users"],
+        "summary": "Create a new user",
+        "operationId": "createUser",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "description": "User object that needs to be added",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CreateUserParams"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400": {
+            "description": "Invalid params"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CreateUserParams": {
+      "type": "object",
+      "properties": {
+        "first_name": {
+          "type": "string",
+          "example": "Jhon"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "jhon@doe.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "example": "2b470cbb-ed7b-4e5d-8a59-360119f2c410"
+        },
+        "first_name": {
+          "type": "string",
+          "example": "Jhon"
+        },
+        "last_name": {
+          "type": "string",
+          "example": "Doe"
+        },
+        "email": {
+          "type": "string",
+          "example": "jhon@doe.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "password"
+        }
+      }
+    }
   }
 }
