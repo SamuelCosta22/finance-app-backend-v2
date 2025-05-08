@@ -146,6 +146,22 @@ describe('User Routes E2E Tests', () => {
     expect(response.status).toBe(400);
   });
 
+  it('PATCH /api/users/:id should return 400 when email is already in use', async () => {
+    const user1 = await request(app)
+      .post('/api/users')
+      .send({ ...user, id: undefined });
+
+    const user2 = await request(app)
+      .post('/api/users')
+      .send({ ...user, email: faker.internet.email(), id: undefined });
+
+    const response = await request(app)
+      .patch(`/api/users/${user2.body.createdUser.id}`)
+      .send({ email: user1.body.createdUser.email });
+
+    expect(response.status).toBe(400);
+  });
+
   it('POST /api/users should return 400 when password is too short', async () => {
     const response = await request(app)
       .post('/api/users')
