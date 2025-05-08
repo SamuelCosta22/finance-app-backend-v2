@@ -2,6 +2,7 @@ import request from 'supertest';
 import { app } from '../../src/app.ts';
 import { transaction } from '../fixtures/transaction.ts';
 import { user } from '../fixtures/user.ts';
+import { TransactionEnum } from '../../src/types/transactions/CreateTransactionParams.ts';
 
 describe('Transaction Routes E2E Tests', () => {
   it('POST /api/transactions should return 201 when transaction is created', async () => {
@@ -36,5 +37,24 @@ describe('Transaction Routes E2E Tests', () => {
 
     expect(response.status).toBe(200);
     expect(response.body[0].id).toEqual(createdTransaction.id);
+  });
+
+  it('PATCH /api/transactions:transactionId should return 200 when transaction is updated', async () => {
+    const { body } = await request(app)
+      .post('/api/users')
+      .send({ ...user, id: undefined });
+    const createdUser = body.createdUser;
+
+    const { body: createdTransaction } = await request(app)
+      .post('/api/transactions')
+      .send({ ...transaction, user_id: createdUser.id, id: undefined });
+
+    const response = await request(app)
+      .patch(`/api/transactions/${createdTransaction.id}`)
+      .send({ amount: 100, type: TransactionEnum.INVESTMENT });
+
+    expect(response.status).toBe(200);
+    expect(response.body.amount).toBe('100');
+    expect(response.body.type).toBe(TransactionEnum.INVESTMENT);
   });
 });
