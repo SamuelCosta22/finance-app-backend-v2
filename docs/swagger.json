@@ -265,6 +265,49 @@
           }
         }
       }
+    },
+    "/api/transactions/{transactionId}": {
+      "patch": {
+        "tags": ["Transactions"],
+        "summary": "Update transaction by ID",
+        "operationId": "updateTransactionById",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "required": true,
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/UpdateTransactionParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction updated successfully",
+            "schema": {
+              "$ref": "#/definitions/Transaction"
+            }
+          },
+          "404": {
+            "description": "Transaction not found",
+            "schema": {
+              "$ref": "#/definitions/TransactionNotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -391,6 +434,28 @@
         }
       }
     },
+    "UpdateTransactionParams": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Salary"
+        },
+        "amount": {
+          "type": "number",
+          "example": "10000"
+        },
+        "type": {
+          "type": "string",
+          "example": "EARNING",
+          "description": "EARNING | EXPENSE | INVESTMENT"
+        },
+        "date": {
+          "type": "string",
+          "example": "2023-01-01T00:00:00.000Z"
+        }
+      }
+    },
     "InternalServerErrorResponse": {
       "type": "object",
       "properties": {
@@ -406,6 +471,15 @@
         "message": {
           "type": "string",
           "example": "User not found"
+        }
+      }
+    },
+    "TransactionNotFoundResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Transaction not found"
         }
       }
     },
