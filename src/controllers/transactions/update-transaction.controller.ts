@@ -4,6 +4,8 @@ import { IUpdateTransactionRepository } from '../../types/repositories/transacti
 import { badRequest, serverError, success } from '../helpers/http.ts';
 import { invalidIdResponse } from '../helpers/invalid-response.ts';
 import { checkIfIdIsValid } from '../helpers/validations.ts';
+import { TransactionNotFoundError } from '../../errors/transaction.ts';
+import { transactionNotFoundResponse } from '../helpers/transactions-validators.ts';
 
 export class UpdateTransactionController {
   constructor(private updateTransactionUseCase: IUpdateTransactionRepository) {
@@ -31,6 +33,8 @@ export class UpdateTransactionController {
       if (error instanceof ZodError) {
         return badRequest({ message: error.errors[0].message });
       }
+      if (error instanceof TransactionNotFoundError)
+        return transactionNotFoundResponse();
       console.error(error);
       return serverError();
     }

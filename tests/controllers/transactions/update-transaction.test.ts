@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
-import { UpdateTransactionController } from '../../../src/controllers/transactions/update-transaction.controller.ts';
 import { TransactionEnum } from '@prisma/client';
+import { UpdateTransactionController } from '../../../src/controllers/transactions/update-transaction.controller.ts';
+import { TransactionNotFoundError } from '../../../src/errors/transaction.ts';
 import { transaction } from '../../fixtures/transaction.ts';
 
 class UpdateTransactionUseCaseStub {
@@ -114,6 +115,20 @@ describe('Update Transaction Controller', () => {
 
     //assert
     expect(result.statusCode).toBe(500);
+  });
+
+  it('should return 404 when TransactionNotFoundError is thrown', async () => {
+    //arrange
+    const { updateTransactionUseCase, sut } = makeSut();
+    jest
+      .spyOn(updateTransactionUseCase, 'execute')
+      .mockRejectedValueOnce(new TransactionNotFoundError(faker.string.uuid()));
+
+    //act
+    const result = await sut.execute(httpRequest);
+
+    //assert
+    expect(result.statusCode).toBe(404);
   });
 
   it('should call UpdateTransactionUseCase with correct params', async () => {
