@@ -1,4 +1,5 @@
 import request from 'supertest';
+import { faker } from '@faker-js/faker';
 import { app } from '../../src/app.ts';
 import { transaction } from '../fixtures/transaction.ts';
 import { user } from '../fixtures/user.ts';
@@ -74,5 +75,13 @@ describe('Transaction Routes E2E Tests', () => {
 
     expect(response.status).toBe(200);
     expect(response.body.id).toBe(createdTransaction.id);
+  });
+
+  it('PATCH /api/transactions:transactionId should return 404 when updating a non-existing transaction', async () => {
+    const response = await request(app)
+      .patch(`/api/transactions/${faker.string.uuid()}`)
+      .send({ amount: 100, type: TransactionEnum.INVESTMENT });
+
+    expect(response.status).toBe(404);
   });
 });
