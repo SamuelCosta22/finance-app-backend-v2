@@ -1,6 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { UpdateUserController } from '../../../src/controllers/users/update-user.controller.ts';
-import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
+import {
+  EmailAlreadyInUseError,
+  UserNotFoundError,
+} from '../../../src/errors/user.ts';
 import { user } from '../../fixtures/user.ts';
 
 class UpdateUserUseCaseStub {
@@ -135,6 +138,20 @@ describe('Update User Controller', () => {
 
     //assert
     expect(result.statusCode).toBe(400);
+  });
+
+  it('should return 404 if UpdateUserUseCase throws UserNotFoundError', async () => {
+    //arrange
+    const { updateUserUseCase, sut } = makeSut();
+    jest
+      .spyOn(updateUserUseCase, 'execute')
+      .mockRejectedValueOnce(new UserNotFoundError(faker.string.uuid()));
+
+    //act
+    const result = await sut.execute(httpRequest);
+
+    //assert
+    expect(result.statusCode).toBe(404);
   });
 
   it('should call UpdateUserUseCase with correct params', async () => {
