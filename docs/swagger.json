@@ -374,19 +374,23 @@
       "properties": {
         "first_name": {
           "type": "string",
-          "example": "Jhon"
+          "example": "Jhon",
+          "required": true
         },
         "last_name": {
           "type": "string",
-          "example": "Doe"
+          "example": "Doe",
+          "required": true
         },
         "email": {
           "type": "string",
-          "example": "jhon@doe.com"
+          "example": "jhon@doe.com",
+          "required": true
         },
         "password": {
           "type": "string",
-          "example": "password"
+          "example": "password",
+          "required": true
         }
       }
     },
@@ -446,24 +450,29 @@
       "properties": {
         "user_id": {
           "type": "string",
-          "example": "fa73e4d3-b9fe-41a5-908f-787cebf79106"
+          "example": "fa73e4d3-b9fe-41a5-908f-787cebf79106",
+          "required": true
         },
         "name": {
           "type": "string",
-          "example": "Salary"
+          "example": "Salary",
+          "required": true
         },
         "amount": {
           "type": "number",
-          "example": "10000"
+          "example": "10000",
+          "required": true
         },
         "type": {
           "type": "string",
           "example": "EARNING",
-          "description": "EARNING | EXPENSE | INVESTMENT"
+          "description": "EARNING | EXPENSE | INVESTMENT",
+          "required": true
         },
         "date": {
           "type": "string",
-          "example": "2023-01-01T00:00:00.000Z"
+          "example": "2023-01-01T00:00:00.000Z",
+          "required": true
         }
       }
     },
