@@ -43,6 +43,41 @@
         }
       }
     },
+    "/api/users/{userId}/balance": {
+      "get": {
+        "summary": "get user balance by user ID",
+        "tags": ["Users"],
+        "operationId": "getUserBalance",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User balance found",
+            "schema": {
+              "$ref": "#/definitions/UserBalance"
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/UserNotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/api/users/{userId}": {
       "get": {
         "tags": ["Users"],
@@ -59,39 +94,6 @@
         "responses": {
           "200": {
             "description": "User found",
-            "schema": {
-              "$ref": "#/definitions/User"
-            }
-          },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "$ref": "#/definitions/UserNotFoundResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerErrorResponse"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": ["Users"],
-        "summary": "Delete user",
-        "operationId": "deleteUser",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User deleted successfully",
             "schema": {
               "$ref": "#/definitions/User"
             }
@@ -150,13 +152,11 @@
             }
           }
         }
-      }
-    },
-    "/api/users/{userId}/balance": {
-      "get": {
-        "summary": "get user balance by user ID",
+      },
+      "delete": {
         "tags": ["Users"],
-        "operationId": "getUserBalance",
+        "summary": "Delete user",
+        "operationId": "deleteUser",
         "parameters": [
           {
             "name": "userId",
@@ -167,9 +167,9 @@
         ],
         "responses": {
           "200": {
-            "description": "User balance found",
+            "description": "User deleted successfully",
             "schema": {
-              "$ref": "#/definitions/UserBalance"
+              "$ref": "#/definitions/User"
             }
           },
           "404": {
@@ -188,42 +188,6 @@
       }
     },
     "/api/transactions": {
-      "get": {
-        "summary": "Get Transactions by UserID",
-        "tags": ["Transactions"],
-        "operationId": "getTransactionsByUserId",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "query",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Transaction found",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/Transaction"
-              }
-            }
-          },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "$ref": "#/definitions/UserNotFoundResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerErrorResponse"
-            }
-          }
-        }
-      },
       "post": {
         "tags": ["Transactions"],
         "summary": "Create a new transaction",
@@ -249,6 +213,42 @@
             "description": "Invalid params",
             "schema": {
               "$ref": "#/definitions/InvalidParamsResponse"
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/UserNotFoundResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get Transactions by UserID",
+        "tags": ["Transactions"],
+        "operationId": "getTransactionsByUserId",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transaction found",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Transaction"
+              }
             }
           },
           "404": {
