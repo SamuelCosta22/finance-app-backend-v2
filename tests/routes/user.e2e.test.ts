@@ -145,4 +145,12 @@ describe('User Routes E2E Tests', () => {
 
     expect(response.status).toBe(400);
   });
+
+  it('POST /api/users should return 400 when password is too short', async () => {
+    const response = await request(app)
+      .post('/api/users')
+      .send({ ...user, id: undefined, password: '123' });
+
+    expect(response.status).toBe(400);
+  });
 });
