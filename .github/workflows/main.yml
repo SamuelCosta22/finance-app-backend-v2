@@ -2,12 +2,12 @@ name: Deploy
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ['main']
 
 jobs:
   check:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -16,6 +16,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '22'
+
+      - name: Create .env.test file
+        run: echo "DATABASE_URL=${{ secrets.DATABASE_URL_TEST }}" >> .env.test
 
       - name: Install dependencies
         run: npm install
