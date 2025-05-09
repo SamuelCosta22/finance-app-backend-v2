@@ -1,6 +1,6 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
-import { app } from '../../src/app.ts';
+const { app } = require('../../src/app.cjs');
 import { transaction } from '../fixtures/transaction.ts';
 import { user } from '../fixtures/user.ts';
 import { TransactionEnum } from '../../src/types/transactions/CreateTransactionParams.ts';
