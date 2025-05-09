@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { GetUserBalanceUseCase } from '../../../src/usecases/users/get-user-balance.usecase.ts';
 import { UserNotFoundError } from '../../../src/errors/user.ts';
 import { user, userBalance } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 class GetUserByIdRepositoryStub {
   async execute(): Promise<{

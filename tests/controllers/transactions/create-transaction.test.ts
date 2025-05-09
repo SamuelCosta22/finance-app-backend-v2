@@ -1,6 +1,7 @@
 import { CreateTransactionController } from '../../../src/controllers/transactions/create-transaction.controller.ts';
 import { TransactionEnum } from '../../../src/types/transactions/CreateTransactionParams.ts';
 import { transaction } from '../../fixtures/transaction.ts';
+import { jest } from '@jest/globals';
 
 class CreateTransactionUseCaseStub {
   async execute() {

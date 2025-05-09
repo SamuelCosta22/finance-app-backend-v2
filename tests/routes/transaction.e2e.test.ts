@@ -1,9 +1,9 @@
 import request from 'supertest';
 import { faker } from '@faker-js/faker';
-const { app } = require('../../src/app.cjs');
 import { transaction } from '../fixtures/transaction.ts';
 import { user } from '../fixtures/user.ts';
 import { TransactionEnum } from '../../src/types/transactions/CreateTransactionParams.ts';
+import { app } from '../../src/app.ts';
 
 describe('Transaction Routes E2E Tests', () => {
   it('POST /api/transactions should return 201 when transaction is created', async () => {

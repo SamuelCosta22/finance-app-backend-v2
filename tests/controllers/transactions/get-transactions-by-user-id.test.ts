@@ -4,6 +4,7 @@ import { GetTransactionsByUserIdUseCase } from '../../../src/usecases/transactio
 import { UserNotFoundError } from '../../../src/errors/user.ts';
 import { TransactionEnum } from '@prisma/client';
 import { transaction } from '../../fixtures/transaction.ts';
+import { jest } from '@jest/globals';
 
 class GetTransactionsByUserIdUseCaseStub {
   async execute(): Promise<{

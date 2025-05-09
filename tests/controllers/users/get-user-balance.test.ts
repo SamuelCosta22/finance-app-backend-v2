@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { GetUserBalanceController } from '../../../src/controllers/users/get-user-balance.controller.ts';
 import { UserNotFoundError } from '../../../src/errors/user.ts';
+import { jest } from '@jest/globals';
 
 class GetUserBalanceUserUseCaseStub {
   async execute() {

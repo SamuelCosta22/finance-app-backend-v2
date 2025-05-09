@@ -2,6 +2,7 @@ import { UserNotFoundError } from '../../../src/errors/user.ts';
 import { CreateTransactionUseCase } from '../../../src/usecases/transactions/create-transaction.usecase.ts';
 import { transaction } from '../../fixtures/transaction.ts';
 import { user, UserEntity } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 const createTransactionParams = {
   ...transaction,

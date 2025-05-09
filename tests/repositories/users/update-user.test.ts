@@ -4,6 +4,7 @@ import { UserNotFoundError } from '../../../src/errors/user.ts';
 import { prisma } from '../../../src/lib/prisma.ts';
 import { PostgresUpdateUserRepository } from '../../../src/repositories/postgres/users/update-user.repository.ts';
 import { user as fakeUser } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 const updateUserParams = {
   id: faker.string.uuid(),

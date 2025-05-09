@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { GetUserByIdController } from '../../../src/controllers/users/get-user-by-id.controller.ts';
 import { user } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 class GetUserByIdUseCaseStub {
   async execute(): Promise<{

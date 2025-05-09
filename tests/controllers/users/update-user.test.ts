@@ -5,6 +5,7 @@ import {
   UserNotFoundError,
 } from '../../../src/errors/user.ts';
 import { user } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 class UpdateUserUseCaseStub {
   async execute() {

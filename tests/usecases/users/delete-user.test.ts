@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { DeleteUserUseCase } from '../../../src/usecases/users/delete-user.usecase.ts';
 import { user } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 class DeleteUserRepositoryUseCaseStub {
   async execute() {

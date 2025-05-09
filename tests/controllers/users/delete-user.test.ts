@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { DeleteUserController } from '../../../src/controllers/users/delete-user.controller.ts';
 import { user } from '../../fixtures/user.ts';
 import { UserNotFoundError } from '../../../src/errors/user.ts';
+import { jest } from '@jest/globals';
 
 class DeleteUserUseCaseStub {
   async execute(): Promise<{

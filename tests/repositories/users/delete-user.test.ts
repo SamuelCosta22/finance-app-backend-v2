@@ -3,6 +3,7 @@ import { prisma } from '../../../src/lib/prisma.ts';
 import { PostgresDeleteUserRepository } from '../../../src/repositories/postgres/users/delete-user.repository.ts';
 import { user } from '../../fixtures/user.ts';
 import { UserNotFoundError } from '../../../src/errors/user.ts';
+import { jest } from '@jest/globals';
 
 describe('Delete User Repository', () => {
   it('should delete a user on db', async () => {

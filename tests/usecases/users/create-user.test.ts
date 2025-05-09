@@ -2,6 +2,7 @@ import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
 import { CreateUserParams } from '../../../src/types/users/CreateUserParams.ts';
 import { CreateUserUseCase } from '../../../src/usecases/users/create-user.usecase.ts';
 import { user, UserEntity } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 class GetUserByEmailRepositoryStub {
   async execute(): Promise<UserEntity | null> {

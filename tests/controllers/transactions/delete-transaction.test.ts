@@ -3,6 +3,7 @@ import { DeleteTransactionController } from '../../../src/controllers/transactio
 import { TransactionEnum } from '../../../src/types/transactions/CreateTransactionParams.ts';
 import { transaction } from '../../fixtures/transaction.ts';
 import { TransactionNotFoundError } from '../../../src/errors/transaction.ts';
+import { jest } from '@jest/globals';
 
 class DeleteTransactionUseCaseStub {
   async execute(): Promise<{

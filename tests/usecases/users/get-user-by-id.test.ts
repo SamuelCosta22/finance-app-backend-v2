@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { GetUserByIdUseCase } from '../../../src/usecases/users/get-user-by-id.usecase.ts';
 import { user } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 class GetUserByIdRepositoryStub {
   async execute(): Promise<{

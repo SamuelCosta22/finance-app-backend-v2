@@ -1,5 +1,6 @@
 import { DeleteTransactionUseCase } from '../../../src/usecases/transactions/delete-transaction.usecase.ts';
 import { transaction } from '../../fixtures/transaction.ts';
+import { jest } from '@jest/globals';
 
 class DeleteTransactionRepositoryStub {
   async execute() {

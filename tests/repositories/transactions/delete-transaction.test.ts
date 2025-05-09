@@ -5,6 +5,7 @@ import { transaction } from '../../fixtures/transaction.ts';
 import { user } from '../../fixtures/user.ts';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { TransactionNotFoundError } from '../../../src/errors/transaction.ts';
+import { jest } from '@jest/globals';
 
 describe('Delete Transaction Repository', () => {
   it('should delete a transaction in db', async () => {

@@ -3,6 +3,7 @@ import { TransactionEnum } from '@prisma/client';
 import { UpdateTransactionController } from '../../../src/controllers/transactions/update-transaction.controller.ts';
 import { TransactionNotFoundError } from '../../../src/errors/transaction.ts';
 import { transaction } from '../../fixtures/transaction.ts';
+import { jest } from '@jest/globals';
 
 class UpdateTransactionUseCaseStub {
   async execute() {

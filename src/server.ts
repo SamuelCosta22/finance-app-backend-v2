@@ -1,5 +1,5 @@
 import 'dotenv/config.js';
-import { app } from './app.cjs';
+import { app } from './app.ts';
 
 app.listen(process.env.PORT, () =>
   console.log('listening on port:', process.env.PORT),

@@ -6,7 +6,7 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-  preset: 'ts-jest',
+  preset: 'ts-jest/presets/default-esm', // Usando o preset para ESM
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.ts'],
   coverageDirectory: 'coverage',
@@ -22,6 +22,10 @@ const config: Config = {
   globalSetup: '<rootDir>/jest.global-setup.ts',
   setupFiles: ['<rootDir>/jest.setup.ts'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup-after-env.ts'],
+  transform: {
+    '^.+\\.(ts|tsx)$': 'ts-jest', // Processa arquivos .ts e .tsx com ts-jest
+  },
+  extensionsToTreatAsEsm: ['.ts'], // Faz o Jest tratar arquivos .ts como módulos ESM
 };
 
 export default config;

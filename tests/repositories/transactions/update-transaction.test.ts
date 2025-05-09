@@ -7,6 +7,7 @@ import { user } from '../../fixtures/user.ts';
 import dayjs from 'dayjs';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 import { TransactionNotFoundError } from '../../../src/errors/transaction.ts';
+import { jest } from '@jest/globals';
 
 describe('Update Transaction Repository', () => {
   it('should update a transaction in db', async () => {

@@ -1,21 +1,21 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "_version": "22.0.0",
-
   "compilerOptions": {
     "lib": ["es2023"],
-    "module": "nodenext",
-    "target": "es2022",
-
+    "module": "Node16", // Garantido compatibilidade com Node16
+    "target": "ES2022",
+    "moduleResolution": "node16", // Resolução de módulos conforme o Node16
+    "allowImportingTsExtensions": true,
+    "isolatedModules": true,
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-
-    "moduleResolution": "NodeNext",
-    "allowImportingTsExtensions": true,
-    "noEmit": true,
-
     "allowJs": true,
-    "checkJs": false
-  }
+    "checkJs": false,
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "jsx": "react"
+  },
+  "include": ["src/**/*.ts", "tests/**/*.ts"]
 }

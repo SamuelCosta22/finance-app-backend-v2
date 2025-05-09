@@ -12,7 +12,7 @@
     "postinstall": "npx husky install && npx prisma generate",
     "eslint:check": "eslint src --ext .ts",
     "prettier:check": "prettier --check src",
-    "test": "jest --passWithNoTests --silent --runInBand --detectOpenHandles --forceExit",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests --silent --runInBand --detectOpenHandles --forceExit",
     "test:watch": "npm run test -- --watch",
     "test:coverage": "npm run test -- --coverage"
   },

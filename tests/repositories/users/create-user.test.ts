@@ -1,6 +1,7 @@
 import { prisma } from '../../../src/lib/prisma.ts';
 import { PostgresCreateUserRepository } from '../../../src/repositories/postgres/users/create-user.repository.ts';
 import { user } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 describe('Create User Repository', () => {
   it('should create a user on db', async () => {

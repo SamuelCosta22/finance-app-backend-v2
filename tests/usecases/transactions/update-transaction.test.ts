@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { UpdateTransactionUseCase } from '../../../src/usecases/transactions/update-transaction.usecase.ts';
 import { transaction } from '../../fixtures/transaction.ts';
+import { jest } from '@jest/globals';
 
 class UpdateTransactionRepositoryStub {
   async execute() {

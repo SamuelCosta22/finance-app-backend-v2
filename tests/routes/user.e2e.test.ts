@@ -1,8 +1,8 @@
 import request from 'supertest';
 import { user } from '../fixtures/user.ts';
-const { app } = require('../../src/app.cjs');
 import { faker } from '@faker-js/faker';
 import { TransactionEnum } from '../../src/types/transactions/CreateTransactionParams.ts';
+import { app } from '../../src/app.ts';
 
 describe('User Routes E2E Tests', () => {
   it('POST /api/users should return 201 when user is created', async () => {

@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { UpdateUserUseCase } from '../../../src/usecases/users/update-user.usecase.ts';
 import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
 import { user, UserEntity } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 class GetUserByEmailRepositoryStub {
   async execute(): Promise<UserEntity | null> {

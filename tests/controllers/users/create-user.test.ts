@@ -2,6 +2,7 @@ import { EmailAlreadyInUseError } from '../../../src/errors/user.ts';
 import { CreateUserController } from '../../../src/controllers/users/create-user.controller.ts';
 import { faker } from '@faker-js/faker';
 import { user } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 class CreateUserUseCaseStub {
   async execute() {

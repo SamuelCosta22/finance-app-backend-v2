@@ -3,6 +3,7 @@ import { prisma } from '../../../src/lib/prisma.ts';
 import { PostgresCreateTransactionRepository } from '../../../src/repositories/postgres/transactions/create-transaction.repository.ts';
 import { transaction } from '../../fixtures/transaction.ts';
 import { user } from '../../fixtures/user.ts';
+import { jest } from '@jest/globals';
 
 describe('Create Transaction Repository', () => {
   it('should create a transaction on db', async () => {
