@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check
     environment: production
-    setps:
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
