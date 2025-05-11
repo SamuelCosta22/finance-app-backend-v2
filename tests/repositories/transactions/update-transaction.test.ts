@@ -85,7 +85,7 @@ describe('Update Transaction Repository', () => {
   it('should throw TransactionNotFoundError if Prisma does not find record to update', async () => {
     //arrange
     const sut = new PostgresUpdateTransactionRepository();
-    jest.spyOn(prisma.user, 'update').mockRejectedValueOnce(
+    jest.spyOn(prisma.transaction, 'update').mockRejectedValueOnce(
       new PrismaClientKnownRequestError('', {
         code: 'P2025',
         clientVersion: '4.9.0',
