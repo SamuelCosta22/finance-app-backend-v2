@@ -20,7 +20,7 @@ jobs:
         run: echo "DATABASE_URL=${{ secrets.DATABASE_URL_TEST }}" >> .env.test
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci --include=dev
 
       - name: ESLint
         run: npm run eslint:check
@@ -45,7 +45,7 @@ jobs:
           node-version: '22'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci --include=dev
 
       - name: Create .env file
         uses: SpicyPizza/create-envfile@v2.0
