@@ -11,7 +11,10 @@ const config: Config = {
   collectCoverageFrom: ['src/**/*.ts'],
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
-  transformIgnorePatterns: ['/node_modules/', '/generated/prisma/'],
+  transformIgnorePatterns: [
+    '/node_modules/(?!@prisma/client)',
+    '/generated/(?!client)',
+  ],
   coveragePathIgnorePatterns: ['/node_modules/', '/generated/prisma/'],
   globalSetup: '<rootDir>/jest.global-setup.ts',
   setupFiles: ['<rootDir>/jest.setup.ts'],
