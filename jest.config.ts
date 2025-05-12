@@ -6,26 +6,28 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-  preset: 'ts-jest/presets/default-esm', // Usando o preset para ESM
+  preset: 'ts-jest/presets/default-esm',
   collectCoverage: true,
   collectCoverageFrom: ['src/**/*.ts'],
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
-  transformIgnorePatterns: [
-    '/node_modules/',
-    '/generated/prisma/', // Ignora a pasta do Prisma no transform
-  ],
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/generated/prisma/', // Ignora a pasta do Prisma na cobertura
-  ],
+  transformIgnorePatterns: ['/node_modules/', '/generated/prisma/'],
+  coveragePathIgnorePatterns: ['/node_modules/', '/generated/prisma/'],
   globalSetup: '<rootDir>/jest.global-setup.ts',
   setupFiles: ['<rootDir>/jest.setup.ts'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup-after-env.ts'],
   transform: {
-    '^.+\\.(ts|tsx)$': 'ts-jest', // Processa arquivos .ts e .tsx com ts-jest
+    '^.+\\.(ts|tsx)$': ['ts-jest', { useESM: true }],
   },
-  extensionsToTreatAsEsm: ['.ts'], // Faz o Jest tratar arquivos .ts como módulos ESM
+  extensionsToTreatAsEsm: ['.ts'],
+  globals: {
+    'ts-jest': {
+      useESM: true,
+    },
+  },
+  moduleNameMapper: {
+    '^(\\.{1,2}/.*)\\.js$': '$1', // Corrige importações relativas com extensão .js
+  },
 };
 
 export default config;
