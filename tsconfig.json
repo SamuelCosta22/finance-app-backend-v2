@@ -18,5 +18,5 @@
     "resolveJsonModule": true,
     "jsx": "react"
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts"]
+  "include": ["src/**/*.ts", "tests/**/*.ts", "jest.config.ts"]
 }
