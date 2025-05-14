@@ -1,4 +1,8 @@
 import {
+  LoginUserUseCaseInput,
+  LoginUserUseCaseOutput,
+} from '../../usecases/users/login-user.usecase.ts';
+import {
   CreateUserParams,
   UpdateUserParams,
 } from '../users/CreateUserParams.ts';
@@ -25,4 +29,8 @@ export interface IUpdateUserRepository {
 
 export interface IGetUserBalanceRepository {
   execute(userId: string): Promise<any>;
+}
+
+export interface ILoginUserUseCase {
+  execute(input: LoginUserUseCaseInput): Promise<LoginUserUseCaseOutput>;
 }

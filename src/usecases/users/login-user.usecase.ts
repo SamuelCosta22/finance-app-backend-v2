@@ -14,7 +14,7 @@ export class LoginUserUseCase {
     this.tokenGeneratorAdapter = tokenGeneratorAdapter;
   }
 
-  async execute(input: LoginUserUseCaseInput) {
+  async execute(input: LoginUserUseCaseInput): Promise<LoginUserUseCaseOutput> {
     const user = await this.getUserByEmailRepository.execute(input.email);
     if (!user) throw new UserNotFoundError();
 
@@ -34,4 +34,16 @@ export class LoginUserUseCase {
 export type LoginUserUseCaseInput = {
   email: string;
   password: string;
+};
+
+export type LoginUserUseCaseOutput = {
+  id: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  password: string;
+  tokens: {
+    accessToken: string;
+    refreshToken: string;
+  };
 };
