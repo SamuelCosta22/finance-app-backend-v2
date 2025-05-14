@@ -6,6 +6,7 @@ import { makeDeleteUserController } from '../factories/controllers/users/make-de
 import { makeGetUserBalanceController } from '../factories/controllers/users/make-get-user-balance.controller.ts';
 import { makeGetUserByIdController } from '../factories/controllers/users/make-get-user-by-id.controller.ts';
 import { makeUpdateUserController } from '../factories/controllers/users/make-update-user.controller.ts';
+import { makeLoginUserController } from '../factories/controllers/users/make-login-user.controller.ts';
 
 export const userRouter = Router();
 
@@ -36,5 +37,11 @@ userRouter.delete('/:userId', async (request, response) => {
 userRouter.get('/:userId/balance', async (request, response) => {
   const getUserBalanceController = makeGetUserBalanceController();
   const { body, statusCode } = await getUserBalanceController.execute(request);
+  response.status(statusCode).send(body);
+});
+
+userRouter.post('/login', async (request, response) => {
+  const loginUserController = makeLoginUserController();
+  const { body, statusCode } = await loginUserController.execute(request);
   response.status(statusCode).send(body);
 });
