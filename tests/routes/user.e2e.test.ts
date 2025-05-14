@@ -197,4 +197,12 @@ describe('User Routes E2E Tests', () => {
     expect(response.body.tokens.accessToken).toBeDefined();
     expect(response.body.tokens.refreshToken).toBeDefined();
   });
+
+  it('POST /api/users/login should return 400 when password is too short', async () => {
+    const response = await request(app)
+      .post('/api/users/login')
+      .send({ ...user, id: undefined, password: '123' });
+
+    expect(response.status).toBe(400);
+  });
 });
