@@ -32,18 +32,29 @@ class IdGeneratorAdapterStub {
   }
 }
 
+class TokensGeneratorAdapterStub {
+  execute(): { accessToken: string; refreshToken: string } {
+    return {
+      accessToken: 'any_access_token',
+      refreshToken: 'any_refresh_token',
+    };
+  }
+}
+
 describe('Create User Use Case', () => {
   const makeSut = () => {
     const getUserByEmailRepository = new GetUserByEmailRepositoryStub();
     const createUserRepository = new CreateUserRepositoryStub();
     const passwordHashedAdapter = new PasswordHashedAdapterStub();
     const idGeneratorAdapter = new IdGeneratorAdapterStub();
+    const tokenGeneratorAdapter = new TokensGeneratorAdapterStub();
 
     const sut = new CreateUserUseCase(
       createUserRepository,
       getUserByEmailRepository,
       passwordHashedAdapter,
       idGeneratorAdapter,
+      tokenGeneratorAdapter,
     );
 
     return {
@@ -52,6 +63,7 @@ describe('Create User Use Case', () => {
       createUserRepository,
       passwordHashedAdapter,
       idGeneratorAdapter,
+      tokenGeneratorAdapter,
     };
   };
 
@@ -69,6 +81,8 @@ describe('Create User Use Case', () => {
       id: 'generated_id',
       password: 'hashed_password',
     });
+    expect(createdUser.tokens.accessToken).toBeDefined();
+    expect(createdUser.tokens.accessToken).toBeDefined();
   });
 
   it('should throw an EmailAlreadyInUseError if GetUserByEmailRepository returns a user', async () => {
