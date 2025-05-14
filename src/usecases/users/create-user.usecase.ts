@@ -1,5 +1,6 @@
 import { IIdGeneratorAdapter } from '../../adapters/id-generator.ts';
 import { IHashGeneratorAdapter } from '../../adapters/password-hasher.ts';
+import { ITokensGeneratorAdapter } from '../../adapters/tokens-generator.ts';
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
 import {
   ICreateUserRepository,
@@ -12,11 +13,13 @@ export class CreateUserUseCase {
     private getUserByEmailRepository: IGetUserByEmailRepository,
     private passwordHasherAdapter: IHashGeneratorAdapter,
     private idGeneratorAdapter: IIdGeneratorAdapter,
+    private tokenGeneratorAdapter: ITokensGeneratorAdapter,
   ) {
     this.createUserRepository = createUserRepository;
     this.getUserByEmailRepository = getUserByEmailRepository;
     this.passwordHasherAdapter = passwordHasherAdapter;
     this.idGeneratorAdapter = idGeneratorAdapter;
+    this.tokenGeneratorAdapter = tokenGeneratorAdapter;
   }
 
   async execute(input: CreateUserUseCaseInput) {
@@ -41,7 +44,10 @@ export class CreateUserUseCase {
 
     const createdUser = await this.createUserRepository.execute(user);
 
-    return createdUser;
+    return {
+      ...createdUser,
+      tokens: this.tokenGeneratorAdapter.execute(userId),
+    };
   }
 }
 
