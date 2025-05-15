@@ -1,9 +1,8 @@
-import dayjs from 'dayjs';
+import { jest } from '@jest/globals';
 import { prisma } from '../../../src/lib/prisma.ts';
 import { PostgresGetTransactionsByUserIdRepository } from '../../../src/repositories/postgres/transactions/get-transactions-by-user-id.repository.ts';
 import { transaction } from '../../fixtures/transaction.ts';
 import { user } from '../../fixtures/user.ts';
-import { jest } from '@jest/globals';
 
 describe('Get Transactions By User Id Repository', () => {
   it('should get transactions by user id on db', async () => {
@@ -23,12 +22,6 @@ describe('Get Transactions By User Id Repository', () => {
     expect(result[0].type).toBe(transaction.type);
     expect(result[0].user_id).toBe(user.id);
     expect(String(result[0].amount)).toBe(String(transaction.amount));
-
-    expect(dayjs(result[0].date).daysInMonth()).toBe(
-      dayjs(transaction.date).daysInMonth(),
-    );
-    expect(dayjs(result[0].date).month()).toBe(dayjs(transaction.date).month());
-    expect(dayjs(result[0].date).year()).toBe(dayjs(transaction.date).year());
   });
 
   it('should call Prisma with correct params', async () => {

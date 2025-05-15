@@ -72,29 +72,38 @@ describe('User Routes E2E Tests', () => {
       .send({ ...user, id: undefined });
     const createdUser = body.createdUser;
 
-    await request(app).post('/api/transactions').send({
-      user_id: createdUser.id,
-      name: faker.commerce.productName(),
-      date: faker.date.anytime(),
-      type: TransactionEnum.EARNING,
-      amount: 10000,
-    });
+    await request(app)
+      .post('/api/transactions')
+      .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+      .send({
+        user_id: createdUser.id,
+        name: faker.commerce.productName(),
+        date: faker.date.anytime(),
+        type: TransactionEnum.EARNING,
+        amount: 10000,
+      });
 
-    await request(app).post('/api/transactions').send({
-      user_id: createdUser.id,
-      name: faker.commerce.productName(),
-      date: faker.date.anytime(),
-      type: TransactionEnum.EXPENSE,
-      amount: 2000,
-    });
+    await request(app)
+      .post('/api/transactions')
+      .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+      .send({
+        user_id: createdUser.id,
+        name: faker.commerce.productName(),
+        date: faker.date.anytime(),
+        type: TransactionEnum.EXPENSE,
+        amount: 2000,
+      });
 
-    await request(app).post('/api/transactions').send({
-      user_id: createdUser.id,
-      name: faker.commerce.productName(),
-      date: faker.date.anytime(),
-      type: TransactionEnum.INVESTMENT,
-      amount: 1000,
-    });
+    await request(app)
+      .post('/api/transactions')
+      .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
+      .send({
+        user_id: createdUser.id,
+        name: faker.commerce.productName(),
+        date: faker.date.anytime(),
+        type: TransactionEnum.INVESTMENT,
+        amount: 1000,
+      });
 
     const response = await request(app)
       .get('/api/users/balance')
