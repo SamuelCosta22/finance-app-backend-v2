@@ -1,8 +1,8 @@
 import { ZodError } from 'zod';
 import { EmailAlreadyInUseError } from '../../errors/user.ts';
 import { createUserSchema } from '../../schemas/user.ts';
-import { ICreateUserRepository } from '../../types/repositories/users.repository.ts';
 import { CreateUserParams } from '../../types/users/CreateUserParams.ts';
+import { CreateUserUseCase } from '../../usecases/users/create-user.usecase.ts';
 import { badRequest, created, serverError } from '../helpers/index.ts';
 
 export type HttpRequest = {
@@ -10,7 +10,7 @@ export type HttpRequest = {
 };
 
 export class CreateUserController {
-  constructor(private createUserUseCase: ICreateUserRepository) {
+  constructor(private createUserUseCase: CreateUserUseCase) {
     this.createUserUseCase = createUserUseCase;
   }
 
