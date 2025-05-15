@@ -18,5 +18,12 @@
     "resolveJsonModule": true,
     "jsx": "react"
   },
-  "include": ["src/**/*.ts", "tests/**/*.ts", "jest.config.ts"]
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.ts",
+    "jest.config.ts",
+    "jest.setup-after-env.ts",
+    "jest.setup.ts",
+    "jest.global-setup.ts"
+  ]
 }
