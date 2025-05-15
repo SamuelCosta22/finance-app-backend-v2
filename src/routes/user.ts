@@ -11,9 +11,12 @@ import { auth } from '../middlewares/auth.ts';
 
 export const userRouter = Router();
 
-userRouter.get('/:userId', auth, async (request, response) => {
+userRouter.get('/', auth, async (request: any, response) => {
   const getUserByIdController = makeGetUserByIdController();
-  const { body, statusCode } = await getUserByIdController.execute(request);
+  const { body, statusCode } = await getUserByIdController.execute({
+    ...request,
+    params: { userId: request.userId },
+  });
   response.status(statusCode).send(body);
 });
 
@@ -23,9 +26,12 @@ userRouter.post('/', async (request, response) => {
   response.status(statusCode).send(body);
 });
 
-userRouter.patch('/:userId', auth, async (request, response) => {
+userRouter.patch('/', auth, async (request: any, response) => {
   const updateUserController = makeUpdateUserController();
-  const { body, statusCode } = await updateUserController.execute(request);
+  const { body, statusCode } = await updateUserController.execute({
+    ...request,
+    params: { userId: request.userId },
+  });
   response.status(statusCode).send(body);
 });
 
@@ -35,9 +41,12 @@ userRouter.delete('/:userId', auth, async (request, response) => {
   response.status(statusCode).send(body);
 });
 
-userRouter.get('/:userId/balance', auth, async (request, response) => {
+userRouter.get('/balance', auth, async (request: any, response) => {
   const getUserBalanceController = makeGetUserBalanceController();
-  const { body, statusCode } = await getUserBalanceController.execute(request);
+  const { body, statusCode } = await getUserBalanceController.execute({
+    ...request,
+    params: { userId: request.userId },
+  });
   response.status(statusCode).send(body);
 });
 

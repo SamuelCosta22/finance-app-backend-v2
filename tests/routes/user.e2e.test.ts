@@ -13,21 +13,21 @@ describe('User Routes E2E Tests', () => {
     expect(response.status).toBe(201);
   });
 
-  it('GET /api/users/:id should return 200 when user is found', async () => {
+  it('GET /api/users should return 200 when user is found', async () => {
     const { body } = await request(app)
       .post('/api/users')
       .send({ ...user, id: undefined });
     const createdUser = body.createdUser;
 
     const response = await request(app)
-      .get(`/api/users/${createdUser.id}`)
+      .get('/api/users/')
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`);
 
     expect(response.status).toBe(200);
     expect(response.body.id).toBe(createdUser.id);
   });
 
-  it('PATCH /api/users/:id should return 200 when user is updated', async () => {
+  it('PATCH /api/users/ should return 200 when user is updated', async () => {
     const { body } = await request(app)
       .post('/api/users')
       .send({ ...user, id: undefined });
@@ -41,7 +41,7 @@ describe('User Routes E2E Tests', () => {
     };
 
     const response = await request(app)
-      .patch(`/api/users/${createdUser.id}`)
+      .patch('/api/users')
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
       .send(updateUserParams);
 
@@ -66,7 +66,7 @@ describe('User Routes E2E Tests', () => {
     expect(response.body.id).toBe(createdUser.id);
   });
 
-  it('GET /api/users/:userId/balance should return 200 when user balance is found', async () => {
+  it('GET /api/users/balance should return 200 when user balance is found', async () => {
     const { body } = await request(app)
       .post('/api/users')
       .send({ ...user, id: undefined });
@@ -97,7 +97,7 @@ describe('User Routes E2E Tests', () => {
     });
 
     const response = await request(app)
-      .get(`/api/users/${createdUser.id}/balance`)
+      .get('/api/users/balance')
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`);
 
     expect(response.status).toBe(200);
@@ -132,10 +132,10 @@ describe('User Routes E2E Tests', () => {
       .send({ ...user, email: faker.internet.email(), id: undefined });
 
     const response = await request(app)
-      .patch(`/api/users/${user2.body.createdUser.id}`)
+      .patch(`/api/users`)
       .set(
         'Authorization',
-        `Bearer ${user1.body.createdUser.tokens.accessToken}`,
+        `Bearer ${user2.body.createdUser.tokens.accessToken}`,
       )
       .send({ email: user1.body.createdUser.email });
 
@@ -150,7 +150,7 @@ describe('User Routes E2E Tests', () => {
     expect(response.status).toBe(400);
   });
 
-  it('PATCH /api/users/:id should return 400 when password is too short', async () => {
+  it('PATCH /api/users should return 400 when password is too short', async () => {
     const { body } = await request(app)
       .post('/api/users')
       .send({ ...user, id: undefined });
@@ -158,7 +158,7 @@ describe('User Routes E2E Tests', () => {
     const createdUser = body.createdUser;
 
     const response = await request(app)
-      .patch(`/api/users/${createdUser.id}`)
+      .patch('/api/users')
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
       .send({
         first_name: faker.person.firstName(),
