@@ -8,6 +8,7 @@ import { makeGetUserByIdController } from '../factories/controllers/users/make-g
 import { makeUpdateUserController } from '../factories/controllers/users/make-update-user.controller.ts';
 import { makeLoginUserController } from '../factories/controllers/users/make-login-user.controller.ts';
 import { auth } from '../middlewares/auth.ts';
+import { makeRefreshTokenController } from '../factories/controllers/users/make-refresh-token.controller.ts';
 
 export const userRouter = Router();
 
@@ -53,5 +54,11 @@ userRouter.get('/balance', auth, async (request: any, response) => {
 userRouter.post('/login', async (request, response) => {
   const loginUserController = makeLoginUserController();
   const { body, statusCode } = await loginUserController.execute(request);
+  response.status(statusCode).send(body);
+});
+
+userRouter.post('/refresh-token', async (request, response) => {
+  const refreshTokenController = makeRefreshTokenController();
+  const { body, statusCode } = await refreshTokenController.execute(request);
   response.status(statusCode).send(body);
 });

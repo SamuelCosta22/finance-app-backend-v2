@@ -14,14 +14,16 @@ export class RefreshTokenController {
     this.refreshTokenUseCase = refreshTokenUseCase;
   }
 
-  async execute(httpRquest: any) {
+  async execute(httpRequest: any) {
     try {
-      const params = httpRquest.body;
+      const params = httpRequest.body;
       await refreshTokenSchema.parseAsync(params);
 
-      const response = this.refreshTokenUseCase.execute(params.refreshToken);
+      const tokens = await this.refreshTokenUseCase.execute(
+        params.refreshToken,
+      );
 
-      const { statusCode, body } = success(response);
+      const { statusCode, body } = success({ tokens });
       return { statusCode, body };
     } catch (error) {
       if (error instanceof ZodError)

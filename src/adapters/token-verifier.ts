@@ -6,6 +6,6 @@ export interface ITokenVerifierAdapter {
 
 export class TokenVerifierAdapter {
   execute(token: string, secret: string) {
-    jwt.verify(token, secret);
+    return jwt.verify(token, secret);
   }
 }

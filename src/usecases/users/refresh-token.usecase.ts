@@ -11,7 +11,7 @@ export class RefreshTokenUseCase {
     this.tokenVerifierAdapter = tokenVerifierAdapter;
   }
 
-  execute(refreshToken: string) {
+  async execute(refreshToken: string) {
     try {
       const refreshTokenSecret = process.env.JWT_REFRESH_TOKEN_SECRET;
 
