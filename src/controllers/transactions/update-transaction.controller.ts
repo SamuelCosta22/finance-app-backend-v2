@@ -1,11 +1,17 @@
 import { ZodError } from 'zod';
 import { updateTransactionSchema } from '../../schemas/transaction.ts';
 import { IUpdateTransactionRepository } from '../../types/repositories/transactions.repository.ts';
-import { badRequest, serverError, success } from '../helpers/http.ts';
+import {
+  badRequest,
+  forbidden,
+  serverError,
+  success,
+} from '../helpers/http.ts';
 import { invalidIdResponse } from '../helpers/invalid-response.ts';
 import { checkIfIdIsValid } from '../helpers/validations.ts';
 import { TransactionNotFoundError } from '../../errors/transaction.ts';
 import { transactionNotFoundResponse } from '../helpers/transactions-validators.ts';
+import { ForbiddenError } from '../../errors/user.ts';
 
 export class UpdateTransactionController {
   constructor(private updateTransactionUseCase: IUpdateTransactionRepository) {
@@ -35,6 +41,7 @@ export class UpdateTransactionController {
       }
       if (error instanceof TransactionNotFoundError)
         return transactionNotFoundResponse();
+      if (error instanceof ForbiddenError) return forbidden();
       console.error(error);
       return serverError();
     }
