@@ -80,6 +80,10 @@ describe('Create User Use Case', () => {
       ...user,
       id: 'generated_id',
       password: 'hashed_password',
+      tokens: {
+        accessToken: 'any_access_token',
+        refreshToken: 'any_refresh_token',
+      },
     });
     expect(createdUser.tokens.accessToken).toBeDefined();
     expect(createdUser.tokens.accessToken).toBeDefined();
