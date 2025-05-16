@@ -118,6 +118,9 @@ describe('User Routes E2E Tests', () => {
       expenses: 2000,
       investments: 1000,
       balance: 7000,
+      earningsPercentage: 76,
+      expensesPercentage: 15,
+      investmentsPercentage: 7,
     });
   });
 
