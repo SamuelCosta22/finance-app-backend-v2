@@ -53,12 +53,24 @@ export class PostgresGetUserBalanceRepository {
     const _totalExpenses = totalExpenses ? Number(totalExpenses) : 0;
     const _totalInvestments = totalInvestments ? Number(totalInvestments) : 0;
 
+    const total = _totalEarnings + _totalExpenses + _totalInvestments;
+
     const balance = _totalEarnings - _totalExpenses - _totalInvestments;
+
+    const earningsPercentage =
+      total === 0 ? 0 : Math.floor((_totalEarnings / total) * 100);
+    const expensesPercentage =
+      total === 0 ? 0 : Math.floor((_totalExpenses / total) * 100);
+    const investmentsPercentage =
+      total === 0 ? 0 : Math.floor((_totalInvestments / total) * 100);
 
     return {
       earnings: _totalEarnings,
       expenses: _totalExpenses,
       investments: _totalInvestments,
+      earningsPercentage,
+      expensesPercentage,
+      investmentsPercentage,
       balance,
     };
   }
