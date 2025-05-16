@@ -30,13 +30,16 @@ describe('Get Transactions By User Id', () => {
     return { getTransactionsByUserIdUseCase, sut };
   };
 
+  const from = '2024-01-01';
+  const to = '2024-02-01';
+
   it('should return 200 when finding transactions by user id successfully', async () => {
     //arrange
     const { sut } = makeSut();
 
     //act
     const result = await sut.execute({
-      query: { userId: faker.string.uuid() },
+      query: { userId: faker.string.uuid(), from, to },
     });
 
     //assert
@@ -49,7 +52,7 @@ describe('Get Transactions By User Id', () => {
 
     //act
     const result = await sut.execute({
-      query: { userId: undefined },
+      query: { userId: undefined, from, to },
     });
 
     //assert
@@ -62,7 +65,7 @@ describe('Get Transactions By User Id', () => {
 
     //act
     const result = await sut.execute({
-      query: { userId: 'invalid_user_id' },
+      query: { userId: 'invalid_user_id', from, to },
     });
 
     //assert
@@ -78,7 +81,7 @@ describe('Get Transactions By User Id', () => {
 
     //act
     const result = await sut.execute({
-      query: { userId: faker.string.uuid() },
+      query: { userId: faker.string.uuid(), from, to },
     });
 
     //assert
@@ -94,7 +97,7 @@ describe('Get Transactions By User Id', () => {
 
     //act
     const result = await sut.execute({
-      params: { userId: faker.string.uuid() },
+      params: { userId: faker.string.uuid(), from, to },
     });
 
     //assert
@@ -108,7 +111,7 @@ describe('Get Transactions By User Id', () => {
     const userId = faker.string.uuid();
 
     //act
-    await sut.execute({ query: { userId } });
+    await sut.execute({ query: { userId, from, to } });
 
     //assert
     expect(executeSpy).toHaveBeenCalledWith(userId);
