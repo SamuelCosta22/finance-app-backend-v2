@@ -28,7 +28,7 @@ export interface IUpdateUserRepository {
 }
 
 export interface IGetUserBalanceRepository {
-  execute(userId: string): Promise<any>;
+  execute(userId: string, from: Date, to: Date): Promise<any>;
 }
 
 export interface ILoginUserUseCase {

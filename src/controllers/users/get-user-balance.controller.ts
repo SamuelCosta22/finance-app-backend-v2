@@ -1,11 +1,9 @@
+import { ZodError } from 'zod';
 import { UserNotFoundError } from '../../errors/user.ts';
+import { getUserBalanceSchema } from '../../schemas/user.ts';
 import { IGetUserBalanceRepository } from '../../types/repositories/users.repository.ts';
-import { serverError, success } from '../helpers/http.ts';
-import {
-  invalidIdResponse,
-  userNotFoundResponse,
-} from '../helpers/invalid-response.ts';
-import { checkIfIdIsValid } from '../helpers/validations.ts';
+import { badRequest, serverError, success } from '../helpers/http.ts';
+import { userNotFoundResponse } from '../helpers/invalid-response.ts';
 
 export class GetUserBalanceController {
   constructor(private getUserBalanceUsecase: IGetUserBalanceRepository) {
@@ -15,15 +13,29 @@ export class GetUserBalanceController {
   async execute(httpRequest: any) {
     try {
       const userId = httpRequest.params.userId;
-      const idIsValid = checkIfIdIsValid(userId);
-      if (!idIsValid) return invalidIdResponse();
+      const from = httpRequest.query.from;
+      const to = httpRequest.query.to;
 
-      const balance = await this.getUserBalanceUsecase.execute(userId);
+      await getUserBalanceSchema.parseAsync({
+        user_id: userId,
+        from,
+        to,
+      });
+
+      const balance = await this.getUserBalanceUsecase.execute(
+        userId,
+        from,
+        to,
+      );
+
       const { statusCode, body } = success(balance);
       return { statusCode, body };
     } catch (error) {
       if (error instanceof UserNotFoundError) {
         return userNotFoundResponse();
+      }
+      if (error instanceof ZodError) {
+        return badRequest({ message: error.errors[0].message });
       }
       console.error(error);
       return serverError();
