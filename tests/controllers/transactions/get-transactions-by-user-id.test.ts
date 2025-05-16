@@ -114,6 +114,6 @@ describe('Get Transactions By User Id', () => {
     await sut.execute({ query: { userId, from, to } });
 
     //assert
-    expect(executeSpy).toHaveBeenCalledWith(userId);
+    expect(executeSpy).toHaveBeenCalledWith(userId, from, to);
   });
 });
