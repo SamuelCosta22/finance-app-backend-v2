@@ -322,6 +322,32 @@
       "get": {
         "summary": "Get authenticatd user transactions",
         "tags": ["Transactions"],
+        "parameters": [
+          {
+            "name": "from",
+            "in": "query",
+            "required": true,
+            "description": "Start date for the transactions query",
+            "example": "2023-01-01",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2023-01-01"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": true,
+            "description": "End date for the transactions query",
+            "example": "2023-01-31",
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "example": "2023-01-31"
+            }
+          }
+        ],
         "operationId": "getAuthenticatedUserTransactions",
         "responses": {
           "200": {
