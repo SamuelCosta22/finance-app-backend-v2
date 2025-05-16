@@ -621,6 +621,18 @@
           "type": "number",
           "example": "3000"
         },
+        "earningsPercentage": {
+          "type": "number",
+          "example": "50"
+        },
+        "expensesPercentage": {
+          "type": "number",
+          "example": "25"
+        },
+        "investmentsPercentage": {
+          "type": "number",
+          "example": "25"
+        },
         "balance": {
           "type": "number",
           "example": "6000"
