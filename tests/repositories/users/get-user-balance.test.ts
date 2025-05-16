@@ -5,6 +5,9 @@ import { user as fakeUser } from '../../fixtures/user.ts';
 import { TransactionEnum } from '../../../src/types/transactions/CreateTransactionParams.ts';
 import { jest } from '@jest/globals';
 
+const from = new Date('2023-01-01');
+const to = new Date('2023-01-31');
+
 describe('Get User Balance Repository', () => {
   it('should get user balance on db', async () => {
     // Arrange
@@ -17,21 +20,21 @@ describe('Get User Balance Repository', () => {
         {
           name: faker.commerce.productName(),
           amount: 20000,
-          date: faker.date.anytime(),
+          date: from,
           type: 'EARNING',
           user_id: user.id,
         },
         {
           name: faker.commerce.productName(),
           amount: 1000,
-          date: faker.date.anytime(),
+          date: from,
           type: 'EXPENSE',
           user_id: user.id,
         },
         {
           name: faker.commerce.productName(),
           amount: 3000,
-          date: faker.date.anytime(),
+          date: to,
           type: 'INVESTMENT',
           user_id: user.id,
         },
@@ -41,7 +44,7 @@ describe('Get User Balance Repository', () => {
     const sut = new PostgresGetUserBalanceRepository();
 
     // Act
-    const result = await sut.execute(user.id);
+    const result = await sut.execute(user.id, from, to);
 
     // Assert
     expect(result.earnings.toString()).toBe('20000');
@@ -56,7 +59,7 @@ describe('Get User Balance Repository', () => {
     const prismaSpy = jest.spyOn(prisma.transaction, 'aggregate');
 
     //act
-    await sut.execute(fakeUser.id);
+    await sut.execute(fakeUser.id, from, to);
 
     //assert
     expect(prismaSpy).toHaveBeenCalledTimes(3);
@@ -64,6 +67,10 @@ describe('Get User Balance Repository', () => {
       where: {
         user_id: fakeUser.id,
         type: TransactionEnum.EARNING,
+        date: {
+          gte: from,
+          lte: to,
+        },
       },
       _sum: {
         amount: true,
@@ -73,6 +80,10 @@ describe('Get User Balance Repository', () => {
       where: {
         user_id: fakeUser.id,
         type: TransactionEnum.EXPENSE,
+        date: {
+          gte: from,
+          lte: to,
+        },
       },
       _sum: {
         amount: true,
@@ -82,6 +93,10 @@ describe('Get User Balance Repository', () => {
       where: {
         user_id: fakeUser.id,
         type: TransactionEnum.INVESTMENT,
+        date: {
+          gte: from,
+          lte: to,
+        },
       },
       _sum: {
         amount: true,
@@ -97,7 +112,7 @@ describe('Get User Balance Repository', () => {
       .mockRejectedValueOnce(new Error());
 
     //act
-    const promise = sut.execute(fakeUser.id);
+    const promise = sut.execute(fakeUser.id, from, to);
 
     //assert
     await expect(promise).rejects.toThrow();
