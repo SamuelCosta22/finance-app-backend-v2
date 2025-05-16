@@ -1,11 +1,9 @@
+import { ZodError } from 'zod';
 import { UserNotFoundError } from '../../errors/user.ts';
+import { getTransactionsByUserIdSchema } from '../../schemas/transaction.ts';
 import { GetTransactionsByUserIdUseCase } from '../../usecases/transactions/get-transactions-by-user-id.usecase.ts';
 import { badRequest, serverError, success } from '../helpers/http.ts';
-import {
-  invalidIdResponse,
-  userNotFoundResponse,
-} from '../helpers/invalid-response.ts';
-import { checkIfIdIsValid } from '../helpers/validations.ts';
+import { userNotFoundResponse } from '../helpers/invalid-response.ts';
 
 export class GetTransactionsByUserIdController {
   constructor(
@@ -17,12 +15,14 @@ export class GetTransactionsByUserIdController {
   async execute(httpRequest: any) {
     try {
       const userId = httpRequest.query.userId;
-      if (!userId) {
-        return badRequest({ message: 'The field userId is required.' });
-      }
+      const from = httpRequest.query.from;
+      const to = httpRequest.query.to;
 
-      const userIdIsValid = checkIfIdIsValid(userId);
-      if (!userIdIsValid) return invalidIdResponse();
+      await getTransactionsByUserIdSchema.parseAsync({
+        user_id: userId,
+        from,
+        to,
+      });
 
       const transactions =
         await this.getTransactionsByUserIdUseCase.execute(userId);
@@ -30,12 +30,13 @@ export class GetTransactionsByUserIdController {
       const { statusCode, body } = success(transactions);
       return { statusCode, body };
     } catch (error) {
-      console.error(error);
-
       if (error instanceof UserNotFoundError) {
         return userNotFoundResponse();
       }
-
+      if (error instanceof ZodError) {
+        return badRequest({ message: error.errors[0].message });
+      }
+      console.error(error);
       return serverError();
     }
   }

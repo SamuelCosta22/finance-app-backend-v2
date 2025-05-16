@@ -45,3 +45,15 @@ export const createTransactionSchema = z.object({
 export const updateTransactionSchema = createTransactionSchema
   .omit({ user_id: true })
   .partial();
+
+export const getTransactionsByUserIdSchema = z.object({
+  user_id: z
+    .string({
+      message: 'User ID is required.',
+    })
+    .uuid({
+      message: 'User ID must be a valid UUID.',
+    }),
+  from: z.string().date(),
+  to: z.string().date(),
+});
