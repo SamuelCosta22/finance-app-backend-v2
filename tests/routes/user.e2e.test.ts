@@ -4,6 +4,9 @@ import { faker } from '@faker-js/faker';
 import { TransactionEnum } from '../../src/types/transactions/CreateTransactionParams.ts';
 import { app } from '../../src/app.ts';
 
+const from = '2022-01-01';
+const to = '2022-01-31';
+
 describe('User Routes E2E Tests', () => {
   it('POST /api/users should return 201 when user is created', async () => {
     const response = await request(app)
@@ -78,7 +81,7 @@ describe('User Routes E2E Tests', () => {
       .send({
         user_id: createdUser.id,
         name: faker.commerce.productName(),
-        date: faker.date.anytime(),
+        date: new Date(from),
         type: TransactionEnum.EARNING,
         amount: 10000,
       });
@@ -89,7 +92,7 @@ describe('User Routes E2E Tests', () => {
       .send({
         user_id: createdUser.id,
         name: faker.commerce.productName(),
-        date: faker.date.anytime(),
+        date: new Date(from),
         type: TransactionEnum.EXPENSE,
         amount: 2000,
       });
@@ -100,13 +103,13 @@ describe('User Routes E2E Tests', () => {
       .send({
         user_id: createdUser.id,
         name: faker.commerce.productName(),
-        date: faker.date.anytime(),
+        date: new Date(to),
         type: TransactionEnum.INVESTMENT,
         amount: 1000,
       });
 
     const response = await request(app)
-      .get('/api/users/balance')
+      .get(`/api/users/balance?from=${from}&to=${to}`)
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`);
 
     expect(response.status).toBe(200);
