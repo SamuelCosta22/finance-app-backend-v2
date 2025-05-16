@@ -29,12 +29,15 @@ describe('Get Transactions By User Id Use Case', () => {
     return { getTransactionsByUserIdRepository, getUserByIdRepository, sut };
   };
 
+  const from = new Date('2023-01-01T00:00:00.000Z');
+  const to = new Date('2023-02-01T00:00:00.000Z');
+
   it('should successfully get transactions by user id', async () => {
     //arrange
     const { sut } = makeSut();
 
     //act
-    const result = await sut.execute(faker.string.uuid());
+    const result = await sut.execute(faker.string.uuid(), from, to);
 
     //assert
     expect(result).toEqual([]);
@@ -47,7 +50,7 @@ describe('Get Transactions By User Id Use Case', () => {
     const userId = faker.string.uuid();
 
     //act
-    const promise = sut.execute(userId);
+    const promise = sut.execute(userId, from, to);
 
     //assert
     await expect(promise).rejects.toThrow(new UserNotFoundError(userId));
@@ -63,7 +66,7 @@ describe('Get Transactions By User Id Use Case', () => {
     const id = faker.string.uuid();
 
     //act
-    await sut.execute(id);
+    await sut.execute(id, from, to);
 
     //assert
     expect(getUserByIdRepositorySpy).toHaveBeenCalledWith(id);
@@ -79,10 +82,14 @@ describe('Get Transactions By User Id Use Case', () => {
     const userId = faker.string.uuid();
 
     //act
-    await sut.execute(userId);
+    await sut.execute(userId, from, to);
 
     //assert
-    expect(getTransactionsByUserIdRepositorySpy).toHaveBeenCalledWith(userId);
+    expect(getTransactionsByUserIdRepositorySpy).toHaveBeenCalledWith(
+      userId,
+      from,
+      to,
+    );
   });
 
   it('should throw if GetUserByIdRepository throws', async () => {
@@ -91,7 +98,7 @@ describe('Get Transactions By User Id Use Case', () => {
     jest.spyOn(getUserByIdRepository, 'execute').mockRejectedValue(new Error());
 
     //act
-    const promise = sut.execute(faker.string.uuid());
+    const promise = sut.execute(faker.string.uuid(), from, to);
 
     //assert
     await expect(promise).rejects.toThrow();
@@ -105,7 +112,7 @@ describe('Get Transactions By User Id Use Case', () => {
       .mockRejectedValue(new Error());
 
     //act
-    const promise = sut.execute(faker.string.uuid());
+    const promise = sut.execute(faker.string.uuid(), from, to);
 
     //assert
     await expect(promise).rejects.toThrow();
