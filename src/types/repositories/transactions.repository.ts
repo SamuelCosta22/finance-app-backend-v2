@@ -4,7 +4,7 @@ import {
 } from '../transactions/CreateTransactionParams.ts';
 
 export interface IGetTransactionsByUserIdRepository {
-  execute(userId: string): Promise<any>;
+  execute(userId: string, from: Date, to: Date): Promise<any>;
 }
 
 export interface IGetTransactionByIdRepository {
