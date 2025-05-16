@@ -54,6 +54,11 @@ export const getTransactionsByUserIdSchema = z.object({
     .uuid({
       message: 'User ID must be a valid UUID.',
     }),
-  from: z.string().date(),
-  to: z.string().date(),
+  from: z
+    .string({ message: 'Start Date (from) is required.' })
+    .transform((val) => new Date(val)),
+
+  to: z
+    .string({ message: 'End Date (to) is required.' })
+    .transform((val) => new Date(val)),
 });

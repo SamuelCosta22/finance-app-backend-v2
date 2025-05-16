@@ -24,8 +24,11 @@ export class GetTransactionsByUserIdController {
         to,
       });
 
-      const transactions =
-        await this.getTransactionsByUserIdUseCase.execute(userId);
+      const transactions = await this.getTransactionsByUserIdUseCase.execute(
+        userId,
+        from,
+        to,
+      );
 
       const { statusCode, body } = success(transactions);
       return { statusCode, body };
