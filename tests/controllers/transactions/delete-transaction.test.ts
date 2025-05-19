@@ -32,20 +32,36 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const result = await sut.execute({
-      params: { transactionId: faker.string.uuid() },
+      params: {
+        transactionId: faker.string.uuid(),
+        userId: faker.string.uuid(),
+      },
     });
 
     //assert
     expect(result.statusCode).toBe(200);
   });
 
-  it('should return 400 when id provided is invalid', async () => {
+  it('should return 400 when transaction id provided is invalid', async () => {
     //arrange
     const { sut } = makeSut();
 
     //act
     const result = await sut.execute({
-      params: { transactionId: 'invalid_id' },
+      params: { transactionId: 'invalid_id', userId: faker.string.uuid() },
+    });
+
+    //assert
+    expect(result.statusCode).toBe(400);
+  });
+
+  it('should return 400 when user id provided is invalid', async () => {
+    //arrange
+    const { sut } = makeSut();
+
+    //act
+    const result = await sut.execute({
+      params: { transactionId: faker.string.uuid(), userId: 'invalid_id' },
     });
 
     //assert
@@ -61,7 +77,10 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const result = await sut.execute({
-      params: { transactionId: faker.string.uuid() },
+      params: {
+        transactionId: faker.string.uuid(),
+        userId: faker.string.uuid(),
+      },
     });
 
     //assert
@@ -77,7 +96,10 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const result = await sut.execute({
-      params: { transactionId: faker.string.uuid() },
+      params: {
+        transactionId: faker.string.uuid(),
+        userId: faker.string.uuid(),
+      },
     });
 
     //assert
