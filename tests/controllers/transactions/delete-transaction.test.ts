@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
+import { jest } from '@jest/globals';
 import { DeleteTransactionController } from '../../../src/controllers/transactions/delete-transaction.controller.ts';
+import { TransactionNotFoundError } from '../../../src/errors/transaction.ts';
 import { TransactionEnum } from '../../../src/types/transactions/CreateTransactionParams.ts';
 import { transaction } from '../../fixtures/transaction.ts';
-import { TransactionNotFoundError } from '../../../src/errors/transaction.ts';
-import { jest } from '@jest/globals';
 
 class DeleteTransactionUseCaseStub {
   async execute(): Promise<{
@@ -90,14 +90,17 @@ describe('Delete Transaction Controller', () => {
     const executeSpy = jest.spyOn(deleteTransactionUseCaseStub, 'execute');
 
     const transactionId = faker.string.uuid();
+    const userId = faker.string.uuid();
+
     //act
     await sut.execute({
       params: {
         transactionId,
+        userId,
       },
     });
 
     //assert
-    expect(executeSpy).toHaveBeenCalledWith(transactionId);
+    expect(executeSpy).toHaveBeenCalledWith(transactionId, userId);
   });
 });
