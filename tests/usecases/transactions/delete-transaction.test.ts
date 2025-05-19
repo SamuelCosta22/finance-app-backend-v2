@@ -1,20 +1,34 @@
+import { faker } from '@faker-js/faker';
 import { DeleteTransactionUseCase } from '../../../src/usecases/transactions/delete-transaction.usecase.ts';
 import { transaction } from '../../fixtures/transaction.ts';
 import { jest } from '@jest/globals';
 
+const user_id = faker.string.uuid();
+
 class DeleteTransactionRepositoryStub {
   async execute() {
-    return transaction;
+    return { ...transaction, user_id };
+  }
+}
+
+class GetTransactionByIdStub {
+  async execute() {
+    return { ...transaction, user_id };
   }
 }
 
 describe('Create Transaction Use Case', () => {
   const makeSut = () => {
     const deleteTransactionRepository = new DeleteTransactionRepositoryStub();
-    const sut = new DeleteTransactionUseCase(deleteTransactionRepository);
+    const getTransactionByIdRepository = new GetTransactionByIdStub();
+    const sut = new DeleteTransactionUseCase(
+      deleteTransactionRepository,
+      getTransactionByIdRepository,
+    );
 
     return {
       deleteTransactionRepository,
+      getTransactionByIdRepository,
       sut,
     };
   };
@@ -24,10 +38,10 @@ describe('Create Transaction Use Case', () => {
     const { sut } = makeSut();
 
     //act
-    const result = await sut.execute(transaction.id);
+    const result = await sut.execute(transaction.id, user_id);
 
     //assert
-    expect(result).toEqual(transaction);
+    expect(result).toEqual({ ...transaction, user_id });
   });
 
   it('should call DeleteTransactionRepository with correct params', async () => {
@@ -39,7 +53,7 @@ describe('Create Transaction Use Case', () => {
     );
 
     //act
-    await sut.execute(transaction.id);
+    await sut.execute(transaction.id, user_id);
 
     //assert
     expect(deleteTransactionRepositorySpy).toHaveBeenCalledWith(transaction.id);
@@ -53,7 +67,7 @@ describe('Create Transaction Use Case', () => {
       .mockRejectedValueOnce(new Error());
 
     //act
-    const promise = sut.execute(transaction.id);
+    const promise = sut.execute(transaction.id, user_id);
 
     //assert
     await expect(promise).rejects.toThrow();

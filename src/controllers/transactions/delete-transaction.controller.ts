@@ -13,7 +13,7 @@ export class DeleteTransactionController {
   async execute(httpRequest: any) {
     try {
       const transactionId = httpRequest.params.transactionId;
-      const userId = httpRequest.params.userId;
+      const userId = httpRequest.params.user_id;
 
       const transactionIdIsValid = checkIfIdIsValid(transactionId);
       const userIdIsValid = checkIfIdIsValid(userId);

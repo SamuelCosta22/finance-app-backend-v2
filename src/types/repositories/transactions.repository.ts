@@ -19,7 +19,7 @@ export interface ICreateTransactionRepository {
 }
 
 export interface IDeleteTransactionRepository {
-  execute(transactionId: string): Promise<any>;
+  execute(transactionId: string, userId?: string): Promise<any>;
 }
 
 export interface IUpdateTransactionRepository {
