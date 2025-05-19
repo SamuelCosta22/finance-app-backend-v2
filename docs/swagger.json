@@ -19,6 +19,80 @@
     }
   ],
   "paths": {
+    "/api/auth/login": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Login user",
+        "operationId": "loginUser",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/LoginUserParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User logged in successfully",
+            "schema": {
+              "$ref": "#/definitions/UserWithToken"
+            }
+          },
+          "401": {
+            "description": "Invalid credentials",
+            "schema": {
+              "$ref": "#/definitions/UnauthorizedErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/refresh-token": {
+      "post": {
+        "tags": ["Auth"],
+        "summary": "Refresh User Token",
+        "operationId": "refreshUserToken",
+        "parameters": [
+          {
+            "name": "user",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/RefreshUserTokenParams"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tokens generated successfully",
+            "schema": {
+              "$ref": "#/definitions/Tokens"
+            }
+          },
+          "401": {
+            "description": "Invalid token",
+            "schema": {
+              "$ref": "#/definitions/UnauthorizedErrorResponse"
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "$ref": "#/definitions/InternalServerErrorResponse"
+            }
+          }
+        }
+      }
+    },
     "/api/users": {
       "post": {
         "tags": ["Users"],
@@ -54,10 +128,12 @@
             }
           }
         }
-      },
+      }
+    },
+    "/api/users/me": {
       "get": {
         "tags": ["Users"],
-        "summary": "Get user",
+        "summary": "Get user data",
         "operationId": "getUser",
         "responses": {
           "200": {
@@ -87,7 +163,7 @@
       },
       "patch": {
         "tags": ["Users"],
-        "summary": "Update user",
+        "summary": "Update authenticated user",
         "operationId": "updateUser",
         "parameters": [
           {
@@ -124,95 +200,11 @@
             "BearerAuth": []
           }
         ]
-      }
-    },
-    "/api/users/login": {
-      "post": {
-        "tags": ["Users"],
-        "summary": "Login user",
-        "operationId": "loginUser",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/LoginUserParams"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "User logged in successfully",
-            "schema": {
-              "$ref": "#/definitions/UserWithToken"
-            }
-          },
-          "401": {
-            "description": "Invalid credentials",
-            "schema": {
-              "$ref": "#/definitions/UnauthorizedErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/api/users/refresh-token": {
-      "post": {
-        "tags": ["Users"],
-        "summary": "Refresh User Token",
-        "operationId": "refreshUserToken",
-        "parameters": [
-          {
-            "name": "user",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/RefreshUserTokenParams"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Tokens generated successfully",
-            "schema": {
-              "$ref": "#/definitions/Tokens"
-            }
-          },
-          "401": {
-            "description": "Invalid token",
-            "schema": {
-              "$ref": "#/definitions/UnauthorizedErrorResponse"
-            }
-          },
-          "500": {
-            "description": "Internal server error",
-            "schema": {
-              "$ref": "#/definitions/InternalServerErrorResponse"
-            }
-          }
-        }
-      }
-    },
-    "/api/users/{userId}": {
+      },
       "delete": {
         "tags": ["Users"],
-        "summary": "Delete user",
+        "summary": "Delete authenticated user",
         "operationId": "deleteUser",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          }
-        ],
         "responses": {
           "200": {
             "description": "User deleted successfully",
@@ -240,9 +232,9 @@
         ]
       }
     },
-    "/api/users/balance": {
+    "/api/users/me/balance": {
       "get": {
-        "summary": "get user balance",
+        "summary": "Get authenticated user balance",
         "tags": ["Users"],
         "operationId": "getUserBalance",
         "parameters": [
@@ -298,7 +290,7 @@
         ]
       }
     },
-    "/api/transactions": {
+    "/api/transactions/me": {
       "post": {
         "tags": ["Transactions"],
         "summary": "Create a new transaction for authenticated user",
@@ -346,7 +338,7 @@
         ]
       },
       "get": {
-        "summary": "Get authenticatd user transactions",
+        "summary": "Get authenticated user transactions",
         "tags": ["Transactions"],
         "parameters": [
           {
@@ -405,7 +397,7 @@
         ]
       }
     },
-    "/api/transactions/{transactionId}": {
+    "/api/transactions/me/{transactionId}": {
       "patch": {
         "tags": ["Transactions"],
         "summary": "Update transaction by ID",
@@ -672,11 +664,6 @@
     "CreateTransactionParams": {
       "type": "object",
       "properties": {
-        "user_id": {
-          "type": "string",
-          "example": "fa73e4d3-b9fe-41a5-908f-787cebf79106",
-          "required": true
-        },
         "name": {
           "type": "string",
           "example": "Salary",
