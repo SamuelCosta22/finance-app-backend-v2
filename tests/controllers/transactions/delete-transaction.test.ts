@@ -34,7 +34,7 @@ describe('Delete Transaction Controller', () => {
     const result = await sut.execute({
       params: {
         transactionId: faker.string.uuid(),
-        userId: faker.string.uuid(),
+        user_id: faker.string.uuid(),
       },
     });
 
@@ -48,7 +48,7 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const result = await sut.execute({
-      params: { transactionId: 'invalid_id', userId: faker.string.uuid() },
+      params: { transactionId: 'invalid_id', user_id: faker.string.uuid() },
     });
 
     //assert
@@ -61,7 +61,7 @@ describe('Delete Transaction Controller', () => {
 
     //act
     const result = await sut.execute({
-      params: { transactionId: faker.string.uuid(), userId: 'invalid_id' },
+      params: { transactionId: faker.string.uuid(), user_id: 'invalid_id' },
     });
 
     //assert
@@ -79,7 +79,7 @@ describe('Delete Transaction Controller', () => {
     const result = await sut.execute({
       params: {
         transactionId: faker.string.uuid(),
-        userId: faker.string.uuid(),
+        user_id: faker.string.uuid(),
       },
     });
 
@@ -98,7 +98,7 @@ describe('Delete Transaction Controller', () => {
     const result = await sut.execute({
       params: {
         transactionId: faker.string.uuid(),
-        userId: faker.string.uuid(),
+        user_id: faker.string.uuid(),
       },
     });
 
@@ -107,22 +107,19 @@ describe('Delete Transaction Controller', () => {
   });
 
   it('should call DeleteTransactionUseCase with correct params', async () => {
-    //arrange
     const { deleteTransactionUseCaseStub, sut } = makeSut();
     const executeSpy = jest.spyOn(deleteTransactionUseCaseStub, 'execute');
 
     const transactionId = faker.string.uuid();
-    const userId = faker.string.uuid();
+    const user_id = faker.string.uuid();
 
-    //act
     await sut.execute({
       params: {
         transactionId,
-        userId,
+        user_id,
       },
     });
 
-    //assert
-    expect(executeSpy).toHaveBeenCalledWith(transactionId, userId);
+    expect(executeSpy).toHaveBeenCalledWith(transactionId, user_id);
   });
 });

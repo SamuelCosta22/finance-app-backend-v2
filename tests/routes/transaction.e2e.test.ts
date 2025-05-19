@@ -78,9 +78,9 @@ describe('Transaction Routes E2E Tests', () => {
       .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`)
       .send({ ...transaction, user_id: createdUser.id, id: undefined });
 
-    const response = await request(app).delete(
-      `/api/transactions/me/${createdTransaction.id}`,
-    );
+    const response = await request(app)
+      .delete(`/api/transactions/me/${createdTransaction.id}`)
+      .set('Authorization', `Bearer ${createdUser.tokens.accessToken}`);
 
     expect(response.status).toBe(200);
     expect(response.body.id).toBe(createdTransaction.id);
